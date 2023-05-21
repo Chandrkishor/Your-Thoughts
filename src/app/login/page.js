@@ -1,7 +1,14 @@
 "use client";
 
 import React from "react";
-import { TextField, Button, Paper, Typography, Stack } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Paper,
+  Typography,
+  Stack,
+  Grid,
+} from "@mui/material";
 
 const LoginPage = () => {
   const handleSkipLogin = () => {
@@ -14,7 +21,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "auto", marginTop: 100 }}>
+    <Grid style={{ maxWidth: 400, margin: "auto" }}>
       <Paper sx={{ padding: 2 }}>
         <Stack spacing={2}>
           <Typography
@@ -30,6 +37,7 @@ const LoginPage = () => {
           </Typography>
 
           <TextField
+            size="small"
             label="User Name"
             variant="outlined"
             fullWidth
@@ -39,6 +47,7 @@ const LoginPage = () => {
             }}
           />
           <TextField
+            size="small"
             label="Password"
             variant="outlined"
             type="password"
@@ -56,6 +65,15 @@ const LoginPage = () => {
             onClick={handleLogin}>
             Login
           </Button>
+
+          <Button
+            variant="outlined"
+            color="primary"
+            fullWidth
+            size="large"
+            onClick={handleSkipLogin}>
+            sign-up
+          </Button>
           <Button
             variant="text"
             color="primary"
@@ -66,7 +84,7 @@ const LoginPage = () => {
           </Button>
         </Stack>
       </Paper>
-    </div>
+    </Grid>
   );
 };
 
