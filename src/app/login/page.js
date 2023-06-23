@@ -9,16 +9,40 @@ import {
   Stack,
   Grid,
 } from "@mui/material";
+import useAPI from "../GeneralAPICaller";
 
 const LoginPage = () => {
+  const { get, post } = useAPI();
+
   const handleSkipLogin = () => {
     alert("skip login clicked");
   };
 
-  const handleLogin = () => {
+  //* localhost:5000/api/v1/register
+  //     {
+  //   "name": "Ck",
+  //   "email": "Ck2@mail.com",
+  //   "password": "1234",
+  //   "age": 26,
+  //   "gender": "male",
+  //   "contact": "9953565656"
+  // }
+
+  const handleLogin = (data) => {
+    console.log("handleLogin ~ data: >>", data);
+
+    //* localhost: 5000 / api / v1 / login;
+    //     {
+    //   "email": "Ck_Verify_@test.com",
+    //   "password": "1234"
+    // }
     // Perform API call here
-    alert("Login button clicked");
+    // post("login", body, handleResponse);
+    alert("Hook done , form builder pending");
   };
+  function handleResponse(data) {
+    console.log("handleResponse ~ data: >>", data);
+  }
 
   return (
     <Grid style={{ maxWidth: 400, margin: "auto" }}>
