@@ -2,7 +2,7 @@
 
 import { Button } from "@mui/material";
 import React from "react";
-import Style from "./signStyle.module.css";
+import Style from "./lignStyle.module.css";
 
 const Error = () => {
   const reset = () => {
@@ -10,7 +10,7 @@ const Error = () => {
   };
   return (
     <div className={Style["loader-container"]}>
-      <h1>Something went wrong(sign up)</h1>
+      <h1>Something went wrong(Login form)</h1>
       <Button variant="contained" onClick={() => reset()}>
         Try again
       </Button>

@@ -15,7 +15,7 @@ const useAPI = () => {
   const API_BASENAME = process.env.API_BASENAME;
   const API_BASEPATH = process.env.API_BASEPATH;
 
-  console.log("useAPI ~ API_BASEURL: >>", API_BASEURL);
+  // console.log("useAPI ~ API_BASEURL: >>", API_BASEURL);
   const get = useCallback(async (path, callBackData) => {
     try {
       setLoading(true);
