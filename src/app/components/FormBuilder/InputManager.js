@@ -1,5 +1,4 @@
 "use client";
-
 import { Button, Divider, Grid, Paper } from "@mui/material";
 import { Formik, Form, Field, FastField } from "formik";
 import { TextField } from "formik-mui";
@@ -10,7 +9,21 @@ export default function MyForm({
   initialValues = {},
   onSubmitFun = () => {},
   title = null,
+  handleCancel = () => {},
+  cancelBtn = "",
+  SubmitBtn = "",
+  formSize = "sm",
 }) {
+  let width = "600px";
+  switch ([formSize]) {
+    case "sm":
+      width = "600px";
+    case "md":
+      width = "900px";
+    case "lg":
+      width = "1200px";
+  }
+
   const validateForm = (values) => {
     const errors = {};
     // Perform validation for each form field
@@ -33,10 +46,10 @@ export default function MyForm({
       onSubmit={onSubmitFun}>
       {({ submitForm, isSubmitting }) => (
         <Form>
-          <Paper sx={{ maxWidth: 800, margin: "auto", p: 2 }}>
+          <Paper sx={{ maxWidth: width, margin: "auto", p: 2 }}>
             <Grid container justifyContent="center" spacing={2}>
               {title && (
-                <>
+                <Grid item xs={12} container>
                   <Grid
                     item
                     xs={12}
@@ -52,7 +65,7 @@ export default function MyForm({
                   <Grid item xs={12} sx={{ mb: 2 }}>
                     <Divider />
                   </Grid>
-                </>
+                </Grid>
               )}
               <Grid item xs={12}>
                 <Grid container spacing={2} sx={{ width: "100%" }}>
@@ -88,28 +101,26 @@ export default function MyForm({
                       }
                     })();
                   })}
+                  {}{" "}
+                  <Grid item xs={12}>
+                    <Grid container spacing={2} justifyContent="flex-end">
+                      <Grid item>
+                        <Button
+                          type="button"
+                          variant="outlined"
+                          onClick={handleCancel}>
+                          {cancelBtn}
+                        </Button>
+                      </Grid>
+                      <Grid item>
+                        <Button type="submit" variant="contained">
+                          {SubmitBtn}
+                        </Button>
+                      </Grid>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
-              {/* <Grid item xs={12}>
-                <Grid container spacing={2} justifyContent="flex-end">
-                  {fieldsArray?.map((item, index) => {
-                    console.log("{fieldsArray?.map ~ item: >>", item);
-                    return (
-                      item.control === "button" && (
-                        <Grid key={item.label + index} item>
-                          <Button
-                            sx={{ width: "100%" }}
-                            variant={item.variant || "contained"}
-                            type={item.type || "button"}
-                            onClick={item.onClick}>
-                            {item.label}
-                          </Button>
-                        </Grid>
-                      )
-                    );
-                  })}
-                </Grid> */}
-              {/* </Grid> */}
             </Grid>
           </Paper>
         </Form>

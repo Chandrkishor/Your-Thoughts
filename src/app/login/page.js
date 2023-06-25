@@ -74,18 +74,6 @@ const LoginPage = () => {
     //   ],
     //   OptionUrl: "http://localhost:3000/api/v1/autocompleteOptions",
     // },
-    {
-      control: "button",
-      label: "Cancel",
-      variant: "outlined", //contained
-      // place: "true", //default nextLine
-    },
-    {
-      control: "button",
-      type: "Submit",
-      label: "Submit",
-      // place: "true", //default nextLine
-    },
   ];
   const initialValues = {
     email: "ck",
@@ -107,6 +95,10 @@ const LoginPage = () => {
       validationObj={validationObj}
       initialValues={initialValues}
       onSubmitFun={onSubmitFun1}
+      // handleCancel={handleCancel}
+      cancelBtn="Cancel"
+      SubmitBtn="Submit"
+      formSize="sm"
     />
   );
 };
