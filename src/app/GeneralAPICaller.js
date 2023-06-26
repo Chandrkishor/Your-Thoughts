@@ -15,7 +15,7 @@ const useAPI = () => {
   const API_BASENAME = process.env.API_BASENAME;
   const API_BASEPATH = process.env.API_BASEPATH;
 
-  console.log("useAPI ~ API_BASEURL: >>", API_BASEURL);
+  // console.log("useAPI ~ API_BASEURL: >>", API_BASEURL);
   const get = useCallback(async (path, callBackData) => {
     try {
       setLoading(true);
@@ -23,11 +23,11 @@ const useAPI = () => {
         .get(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${path}`)
         .then(({ data }) => {
           setData(data);
-          callBackData(data);
+          callBackData(data, true);
         });
     } catch (err) {
       console.log("err", err);
-      callBackData(err);
+      callBackData(err, false);
       setErrorMessage((pre) => ({
         ...pre,
         message: err.message,
@@ -48,7 +48,7 @@ const useAPI = () => {
       )
       .then(({ data }) => {
         setData(data);
-        callBackFun(data);
+        callBackFun(data, true);
       })
       .catch((err) => {
         setErrorMessage({
@@ -56,6 +56,7 @@ const useAPI = () => {
           type: "error",
           alertError: true,
         });
+        callBackFun(err, false);
         console.log("err", err);
       })
       .finally(() => {
@@ -66,14 +67,16 @@ const useAPI = () => {
   const put = useCallback((pUrl, body) => {
     setLoading(true);
     axios
-      .put(
+      .patch(
         `${process.env.API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`,
         body
       )
       .then(() => {
         setData(data);
+        callBackFun(data, true);
       })
       .catch((err) => {
+        callBackFun(err, false);
         setErrorMessage({
           message: err.response.data.message ?? "",
           type: "error",

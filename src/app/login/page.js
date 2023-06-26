@@ -1,18 +1,10 @@
 "use client";
-
 import React from "react";
-import {
-  TextField,
-  Button,
-  Paper,
-  Typography,
-  Stack,
-  Grid,
-} from "@mui/material";
-import useAPI from "../GeneralAPICaller";
+// import useAPI from "../GeneralAPICaller";
+import MyForm from "../components/FormBuilder/InputManager";
 
 const LoginPage = () => {
-  const { get, post } = useAPI();
+  // const { get, post } = useAPI();
 
   const handleSkipLogin = () => {
     alert("skip login clicked");
@@ -44,71 +36,71 @@ const LoginPage = () => {
     console.log("handleResponse ~ data: >>", data);
   }
 
+  const FormFieldArray = [
+    {
+      control: "TextField2",
+      componentType: false, // for fast Fields
+      name: "email",
+      type: "text",
+      label: "Email",
+      size: { sm: 6, md: 4 },
+    },
+    {
+      control: "TextField2",
+      componentType: true, // for fast Fields
+      name: "password",
+      type: "password",
+      label: "Password",
+      size: { sm: 6, md: 4 },
+      // Options: [],
+    },
+    {
+      control: "checkbox",
+      name: "checkboxTest",
+      label: "My checkbox",
+    },
+    {
+      control: "switch",
+      name: "switchTest",
+      label: "My switch",
+    },
+    {
+      control: "autocomplete",
+      name: "loginSelectText",
+      label: "My first select",
+      options: [
+        { _id: "someId1", label: "TestLabel" },
+        { _id: "someId2", label: "TestLabel2" },
+        { _id: "someId3", label: "TestLabel3" },
+      ],
+      OptionUrl: "http://localhost:3000/api/v1/autocompleteOptions",
+    },
+  ];
+  const initialValues = {
+    email: "ck",
+    password: "12",
+  };
+  const validationObj = {};
+
+  function onSubmitFun1(values, { setSubmitting }) {
+    console.log("onSubmitFun1 ~ values: >>", values);
+    setTimeout(function () {
+      setSubmitting(false);
+    }, 500);
+  }
+
   return (
-    <Grid style={{ maxWidth: 400, margin: "auto" }}>
-      <Paper sx={{ padding: 2 }}>
-        <Stack spacing={2}>
-          <Typography
-            variant="h1"
-            sx={{
-              color: "#3F51B5",
-              fontSize: "24px",
-              fontWeight: "bold",
-              textAlign: "center",
-              mb: 3,
-            }}>
-            Login page
-          </Typography>
-
-          <TextField
-            size="small"
-            label="User Name"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            inputProps={{
-              autoComplete: "off",
-            }}
-          />
-          <TextField
-            size="small"
-            label="Password"
-            variant="outlined"
-            type="password"
-            fullWidth
-            inputProps={{
-              autoComplete: "off",
-            }}
-            margin="normal"
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            fullWidth
-            size="large"
-            onClick={handleLogin}>
-            Login
-          </Button>
-
-          <Button
-            variant="outlined"
-            color="primary"
-            fullWidth
-            size="large"
-            onClick={handleSkipLogin}>
-            sign-up
-          </Button>
-          <Button
-            variant="text"
-            color="primary"
-            fullWidth
-            size="large"
-            onClick={handleSkipLogin}>
-            Skip Login
-          </Button>
-        </Stack>
-      </Paper>
-    </Grid>
+    <MyForm
+      title="Login Page"
+      fieldsArray={FormFieldArray}
+      validationObj={validationObj}
+      initialValues={initialValues}
+      onSubmitFun={onSubmitFun1}
+      // handleCancel={handleCancel}
+      cancelBtn="Cancel"
+      SubmitBtn="Submit"
+      formSize="sm"
+    />
   );
 };
 
