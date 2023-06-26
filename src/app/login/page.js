@@ -38,42 +38,43 @@ const LoginPage = () => {
 
   const FormFieldArray = [
     {
-      control: "TextField",
+      control: "TextField2",
       componentType: false, // for fast Fields
       name: "email",
       type: "text",
       label: "Email",
-      placeholder: "Enter your email",
-      helperText: "Please enter proper email address",
-      // size: "large",
       size: { sm: 6, md: 4 },
     },
     {
-      control: "TextField",
+      control: "TextField2",
       componentType: true, // for fast Fields
       name: "password",
       type: "password",
       label: "Password",
-      placeholder: "Enter your Password",
-      helperText: "Password should be at least 8 characters",
       size: { sm: 6, md: 4 },
       // Options: [],
     },
-    // {
-    //   control: "selector",
-    //   name: "loginSelectText",
-    //   type: "autocomplete",
-    //   label: "My first select",
-    //   placeholder: "Choose an option",
-    //   helperText: "Choose a correct option",
-    //   defaultValue: { _id: "someId", label: "TestLabel" },
-    //   Options: [
-    //     { _id: "someId1", label: "TestLabel" },
-    //     { _id: "someId2", label: "TestLabel2" },
-    //     { _id: "someId3", label: "TestLabel3" },
-    //   ],
-    //   OptionUrl: "http://localhost:3000/api/v1/autocompleteOptions",
-    // },
+    {
+      control: "checkbox",
+      name: "checkboxTest",
+      label: "My checkbox",
+    },
+    {
+      control: "switch",
+      name: "switchTest",
+      label: "My switch",
+    },
+    {
+      control: "autocomplete",
+      name: "loginSelectText",
+      label: "My first select",
+      options: [
+        { _id: "someId1", label: "TestLabel" },
+        { _id: "someId2", label: "TestLabel2" },
+        { _id: "someId3", label: "TestLabel3" },
+      ],
+      OptionUrl: "http://localhost:3000/api/v1/autocompleteOptions",
+    },
   ];
   const initialValues = {
     email: "ck",

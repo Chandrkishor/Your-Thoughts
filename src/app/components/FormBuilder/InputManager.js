@@ -1,7 +1,16 @@
 "use client";
 import { Button, Divider, Grid, Paper } from "@mui/material";
 import { Formik, Form, Field, FastField } from "formik";
-import { TextField } from "formik-mui";
+import {
+  TextField,
+  Autocomplete,
+  CheckboxWithLabel,
+  InputBase,
+  Switch,
+} from "formik-mui";
+// import TextField from "@mui/material/TextField";
+import { TextField as MuiTextField } from "@mui/material";
+
 import * as React from "react";
 
 export default function MyForm({
@@ -35,6 +44,9 @@ export default function MyForm({
     } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
       errors.email = "Invalid email format";
     }
+    if (!values.loginSelectText) {
+      errors.loginSelectText = "this field required";
+    }
     // Add more validation rules as needed
     return errors;
   };
@@ -44,7 +56,7 @@ export default function MyForm({
       initialValues={initialValues}
       validate={validateForm}
       onSubmit={onSubmitFun}>
-      {({ submitForm, isSubmitting }) => (
+      {({ submitForm, isSubmitting, errors, touched }) => (
         <Form>
           <Paper sx={{ maxWidth: width, margin: "auto", p: 2 }}>
             <Grid container justifyContent="center" spacing={2}>
@@ -83,6 +95,78 @@ export default function MyForm({
                                 type={item.type}
                                 label={item.label}
                                 size="small"
+                              />
+                            </Grid>
+                          );
+                        case "TextField2":
+                          return (
+                            <Grid item key={item.name + index} xs={xs}>
+                              <FastField
+                                sx={{ width: "100%" }}
+                                component={TextField}
+                                name={item.name}
+                                type={item.type}
+                                label={item.label}
+                                size="small"
+                              />
+                            </Grid>
+                          );
+                        case "checkbox":
+                          return (
+                            <Grid item key={item?.name + index} xs={xs}>
+                              <FastField
+                                component={CheckboxWithLabel}
+                                type="checkbox"
+                                name={item?.name}
+                                Label={{ label: item?.label ?? "" }}
+                              />
+                            </Grid>
+                          );
+                        case "inputBase":
+                          return (
+                            <Grid item key={item?.name + index} xs={xs}>
+                              <FastField
+                                component={InputBase}
+                                name="inputBase"
+                              />
+                            </Grid>
+                          );
+                        case "switch":
+                          return (
+                            <Grid item key={item?.name + index} xs={xs}>
+                              <Field
+                                component={Switch}
+                                type="checkbox"
+                                name={item?.name ?? ""}
+                              />
+                            </Grid>
+                          );
+                        case "autocomplete":
+                          return (
+                            <Grid item key={item?.name + index} xs={xs}>
+                              <Field
+                                name={item?.name}
+                                component={Autocomplete}
+                                options={item?.options ?? null}
+                                getOptionLabel={(option) => option?.label ?? ""}
+                                placeholder={item?.placeholder || ""}
+                                // helperText={item?.helperText ?? ""}
+                                size="small"
+                                style={{ minWidth: 300, maxWidth: "100%" }}
+                                renderInput={(params) => (
+                                  <MuiTextField
+                                    {...params}
+                                    name={item?.name}
+                                    error={
+                                      touched[item?.name] &&
+                                      !!errors[item?.name]
+                                    }
+                                    helperText={errors[item?.name]}
+                                    label={item?.label ?? ""}
+                                    variant="outlined"
+                                    size="small"
+                                  />
+                                )}
                               />
                             </Grid>
                           );
