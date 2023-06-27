@@ -75,6 +75,17 @@ const LoginPage = () => {
       ],
       OptionUrl: "http://localhost:3000/api/v1/autocompleteOptions",
     },
+    {
+      control: "radioGroup",
+      name: "radioGroup",
+      row: true,
+      label: "My first Radio Group",
+      options: [
+        { _id: "someId1", label: "radioGroup 1" },
+        { _id: "someId2", label: "radioGroup 2" },
+        { _id: "someId3", label: "radioGroup 3" },
+      ],
+    },
   ];
   const initialValues = {
     email: "ck",

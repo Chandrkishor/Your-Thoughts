@@ -1,5 +1,13 @@
 "use client";
-import { Button, Divider, Grid, Paper } from "@mui/material";
+import {
+  Button,
+  Divider,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Paper,
+  Radio,
+} from "@mui/material";
 import { Formik, Form, Field, FastField } from "formik";
 import {
   TextField,
@@ -7,6 +15,7 @@ import {
   CheckboxWithLabel,
   InputBase,
   Switch,
+  RadioGroup,
 } from "formik-mui";
 // import TextField from "@mui/material/TextField";
 import { TextField as MuiTextField } from "@mui/material";
@@ -139,6 +148,29 @@ export default function MyForm({
                                 type="checkbox"
                                 name={item?.name ?? ""}
                               />
+                            </Grid>
+                          );
+                        case "radioGroup":
+                          return (
+                            <Grid item key={item?.name + index} xs={xs}>
+                              <FormLabel id="demo-radio-buttons-group-label">
+                                {item?.label}
+                              </FormLabel>
+                              <FastField
+                                row={item?.row ?? false}
+                                aria-labelledby="demo-radio-buttons-group-label"
+                                component={RadioGroup}
+                                name={item?.name}>
+                                {item?.options?.map((option, index) => (
+                                  <FormControlLabel
+                                    key={`${option?._id}-${index}`}
+                                    value={option?._id ?? false}
+                                    control={<Radio disabled={isSubmitting} />}
+                                    label={option?.label ?? ""}
+                                    disabled={isSubmitting}
+                                  />
+                                ))}
+                              </FastField>
                             </Grid>
                           );
                         case "autocomplete":
