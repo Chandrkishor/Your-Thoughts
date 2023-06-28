@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
+// import { process } from "process";
 
 const useAPI = () => {
   const [data, setData] = useState(null);
@@ -11,11 +12,11 @@ const useAPI = () => {
     alertError: false,
   });
 
-  const API_BASEURL = process.env.API_BASEURL;
-  const API_BASENAME = process.env.API_BASENAME;
-  const API_BASEPATH = process.env.API_BASEPATH;
+  const API_BASEURL = process?.env?.API_BASEURL;
+  const API_BASENAME = process?.env?.API_BASENAME;
+  const API_BASEPATH = process?.env?.API_BASEPATH;
 
-  // console.log("useAPI ~ API_BASEURL: >>", API_BASEURL);
+  console.log("useAPI ~ API_BASEURL: >>", API_BASEURL, process.env);
   const get = useCallback(async (path, callBackData) => {
     try {
       setLoading(true);

@@ -19,12 +19,13 @@ import {
 } from "formik-mui";
 // import TextField from "@mui/material/TextField";
 import { TextField as MuiTextField } from "@mui/material";
+import * as Yup from "yup";
 
 import * as React from "react";
 
 export default function MyForm({
   fieldsArray = [],
-  initialValues = {},
+  // initialValues = {},
   onSubmitFun = () => {},
   title = null,
   handleCancel = () => {},
@@ -42,28 +43,32 @@ export default function MyForm({
       width = "1200px";
   }
 
-  const validateForm = (values) => {
-    const errors = {};
-    // Perform validation for each form field
-    if (!values.password) {
-      errors.password = "Name is required";
-    }
-    if (!values.email) {
-      errors.email = "Email is required";
-    } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-      errors.email = "Invalid email format";
-    }
-    if (!values.loginSelectText) {
-      errors.loginSelectText = "this field required";
-    }
-    // Add more validation rules as needed
-    return errors;
+  const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("Invalid email format")
+      .required("Email is required"),
+    // name: Yup.string().required("Name is required"),
+    password: Yup.string()
+      .required("Password is required")
+      .min(4, "Password must be at least 4 characters"),
+    // selectOption: Yup.string().required("Please select an option"),
+    // radioButton: Yup.string().required("Please select one option"),
+    // checkbox: Yup.array().min(1, "Please select at least one option"),
+  });
+
+  const initialValues = {
+    email: "",
+    // name: "",
+    password: "",
+    // selectOption: "",
+    // radioButton: "",
+    // checkbox: [],
   };
 
   return (
     <Formik
       initialValues={initialValues}
-      validate={validateForm}
+      validationSchema={validationSchema}
       onSubmit={onSubmitFun}>
       {({ submitForm, isSubmitting, errors, touched }) => (
         <Form>
@@ -98,6 +103,7 @@ export default function MyForm({
                           return (
                             <Grid item key={item.name + index} xs={xs}>
                               <Field
+                                {...item}
                                 sx={{ width: "100%" }}
                                 component={TextField}
                                 name={item.name}
@@ -111,6 +117,7 @@ export default function MyForm({
                           return (
                             <Grid item key={item.name + index} xs={xs}>
                               <FastField
+                                {...item}
                                 sx={{ width: "100%" }}
                                 component={TextField}
                                 name={item.name}
@@ -124,6 +131,7 @@ export default function MyForm({
                           return (
                             <Grid item key={item?.name + index} xs={xs}>
                               <FastField
+                                {...item}
                                 component={CheckboxWithLabel}
                                 type="checkbox"
                                 name={item?.name}
@@ -135,6 +143,7 @@ export default function MyForm({
                           return (
                             <Grid item key={item?.name + index} xs={xs}>
                               <FastField
+                                {...item}
                                 component={InputBase}
                                 name="inputBase"
                               />
@@ -144,6 +153,7 @@ export default function MyForm({
                           return (
                             <Grid item key={item?.name + index} xs={xs}>
                               <Field
+                                {...item}
                                 component={Switch}
                                 type="checkbox"
                                 name={item?.name ?? ""}
@@ -157,12 +167,14 @@ export default function MyForm({
                                 {item?.label}
                               </FormLabel>
                               <FastField
+                                {...item}
                                 row={item?.row ?? false}
                                 aria-labelledby="demo-radio-buttons-group-label"
                                 component={RadioGroup}
                                 name={item?.name}>
                                 {item?.options?.map((option, index) => (
                                   <FormControlLabel
+                                    {...option}
                                     key={`${option?._id}-${index}`}
                                     value={option?._id ?? false}
                                     control={<Radio disabled={isSubmitting} />}
@@ -177,6 +189,7 @@ export default function MyForm({
                           return (
                             <Grid item key={item?.name + index} xs={xs}>
                               <Field
+                                {...item}
                                 name={item?.name}
                                 component={Autocomplete}
                                 options={item?.options ?? null}
@@ -206,6 +219,7 @@ export default function MyForm({
                           return (
                             <Grid key={item.label + index} item>
                               <Button
+                                {...item}
                                 sx={{ width: "100%" }}
                                 variant={item.variant || "contained"}
                                 type={item.type || "button"}
