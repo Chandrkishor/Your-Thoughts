@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
-import useAPI from "../GeneralAPICaller";
-import MyForm from "../components/FormBuilder/FormBuilder";
+// import useAPI from "../GeneralAPICaller";
+// import MyForm from "../components/FormBuilder/FormBuilder";
 import { Button, Grid, Paper } from "@mui/material";
 import Link from "next/link";
+import MyForm from "@/components/FormBuilder/FormBuilder";
+import useAPI from "@/components/GeneralAPICaller";
 
 const FormFieldArray = [
   {
