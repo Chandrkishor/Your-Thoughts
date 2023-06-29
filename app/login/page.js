@@ -1,16 +1,14 @@
 "use client";
-import React from "react";
-// import useAPI from "../GeneralAPICaller";
-// import MyForm from "../components/FormBuilder/FormBuilder";
+import React, { useCallback } from "react";
 import { Button, Grid, Paper } from "@mui/material";
 import Link from "next/link";
 import MyForm from "@/components/FormBuilder/FormBuilder";
 import useAPI from "@/components/GeneralAPICaller";
+import { useRouter } from "next/navigation";
 
 const FormFieldArray = [
   {
     control: "TextField2",
-    componentType: false,
     name: "email",
     type: "text",
     label: "Email",
@@ -18,7 +16,6 @@ const FormFieldArray = [
   },
   {
     control: "TextField2",
-    componentType: true,
     name: "password",
     type: "password",
     label: "Password",
@@ -58,8 +55,14 @@ const FormFieldArray = [
   // },
 ];
 
+let initialVal = {
+  email: "ck@mail.com",
+  password: "1234",
+};
+
 const LoginPage = () => {
-  const { get, post } = useAPI();
+  const { post } = useAPI();
+  const router = useRouter();
 
   //* localhost:5000/api/v1/register
   //     {
@@ -74,14 +77,15 @@ const LoginPage = () => {
   function handleResponse(response) {
     console.log("handleResponse ~ response: >>", response);
   }
-  function onSubmitFun1(values, { setSubmitting }) {
-    console.log("onSubmitFun1 ~ values: >>", values);
-    //* Perform API call here
+  function onSubmit(values, { setSubmitting }) {
+    setTimeout(() => {
+      setSubmitting(false);
+    }, 1000);
     post("login", values, handleResponse);
-    // setTimeout(function () {
-    //   setSubmitting(false);
-    // }, 500);
   }
+  const handleSignUP = useCallback(() => {
+    router.push("/sign_up");
+  }, []);
 
   return (
     <Grid>
@@ -89,32 +93,27 @@ const LoginPage = () => {
         <MyForm
           title="Login Page"
           fieldsArray={FormFieldArray}
-          // validationObj={validationObj}
-          // initialValues={initialValues}
-          onSubmitFun={onSubmitFun1}
-          // handleCancel={handleCancel}
-          cancelBtn="Cancel"
-          SubmitBtn="Submit"
+          initialVal={initialVal}
+          onSubmitFun={onSubmit}
+          cancelBtn="SignUp"
+          SubmitBtn="Login"
           formSize="sm"
+          SpecialBtn={true}
+          handleCancel={handleSignUP}
         />
         <Grid container spacing={2} sx={{ mt: 3 }}>
           <Grid item xs={12}>
             <span style={{ color: "red" }}>Welcome! </span>
             We're glad to have you here. Please log in to start your session.
           </Grid>
-          <Grid item xs={6}>
-            <Link href="/sign_up">
-              <Button variant="contained" sx={{ width: "100%" }}>
-                Sign Up
-              </Button>
-            </Link>
-          </Grid>
-          <Grid item xs={6}>
-            <Link href="/">
-              <Button variant="outlined" sx={{ width: "100%" }}>
-                skip Login
-              </Button>
-            </Link>
+
+          <Grid item xs={12}>
+            <Button
+              variant="text"
+              sx={{ width: "100%" }}
+              onClick={() => router.push("/")}>
+              skip Login
+            </Button>
           </Grid>
         </Grid>
       </Paper>

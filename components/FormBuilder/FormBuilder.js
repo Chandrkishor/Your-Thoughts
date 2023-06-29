@@ -8,7 +8,6 @@ import {
   Paper,
   Radio,
 } from "@mui/material";
-import { Formik, Form, Field, FastField } from "formik";
 import {
   TextField,
   Autocomplete,
@@ -17,22 +16,23 @@ import {
   Switch,
   RadioGroup,
 } from "formik-mui";
-// import TextField from "@mui/material/TextField";
+import { Formik, Form, Field, FastField } from "formik";
 import { TextField as MuiTextField } from "@mui/material";
 import * as Yup from "yup";
-
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function MyForm({
   fieldsArray = [],
-  // initialValues = {},
+  initialVal = {},
   onSubmitFun = () => {},
   title = null,
   handleCancel = () => {},
   cancelBtn = "",
   SubmitBtn = "",
   formSize = "sm",
+  SpecialBtn = false,
 }) {
+  // const [initialValue, setInitialValues] = useState({});
   let width = "600px";
   switch ([formSize]) {
     case "sm":
@@ -56,23 +56,28 @@ export default function MyForm({
     // checkbox: Yup.array().min(1, "Please select at least one option"),
   });
 
-  const initialValues = {
-    email: "",
-    // name: "",
-    password: "",
-    // selectOption: "",
-    // radioButton: "",
-    // checkbox: [],
-  };
-
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={initialVal ?? {}}
       validationSchema={validationSchema}
       onSubmit={onSubmitFun}>
       {({ submitForm, isSubmitting, errors, touched }) => (
         <Form>
-          <Paper sx={{ maxWidth: width, margin: "auto", p: 2 }}>
+          <Paper
+            sx={
+              SpecialBtn
+                ? {
+                    maxWidth: width,
+                    margin: "auto",
+                    boxShadow: "none",
+                    p: 2,
+                  }
+                : {
+                    maxWidth: width,
+                    margin: "auto",
+                    p: 2,
+                  }
+            }>
             <Grid container justifyContent="center" spacing={2}>
               {title && (
                 <Grid item xs={12} container>
@@ -94,7 +99,11 @@ export default function MyForm({
                 </Grid>
               )}
               <Grid item xs={12}>
-                <Grid container spacing={2} sx={{ width: "100%" }}>
+                <Grid
+                  container
+                  spacing={2}
+                  sx={{ width: "100%" }}
+                  justifyContent={"center"}>
                   {fieldsArray?.map((item, index) => {
                     let xs = 12;
                     return (() => {
@@ -231,19 +240,26 @@ export default function MyForm({
                       }
                     })();
                   })}
-                  {}{" "}
                   <Grid item xs={12}>
-                    <Grid container spacing={2} justifyContent="flex-end">
-                      <Grid item>
+                    <Grid
+                      container
+                      spacing={2}
+                      justifyContent={SpecialBtn ? "" : "flex-end"}
+                      flexDirection={SpecialBtn ? "column-reverse" : "row"}>
+                      <Grid item sx={SpecialBtn && { width: "100%" }}>
                         <Button
                           type="button"
                           variant="outlined"
+                          sx={SpecialBtn && { width: "100%" }}
                           onClick={handleCancel}>
                           {cancelBtn}
                         </Button>
                       </Grid>
-                      <Grid item>
-                        <Button type="submit" variant="contained">
+                      <Grid item sx={SpecialBtn && { width: "100%" }}>
+                        <Button
+                          type="submit"
+                          sx={SpecialBtn && { width: "100%" }}
+                          variant="contained">
                           {SubmitBtn}
                         </Button>
                       </Grid>
