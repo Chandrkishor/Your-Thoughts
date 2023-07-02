@@ -40,9 +40,9 @@ const useAPI = () => {
     axios
       // .post(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`, body)
       .post(`http://localhost:5000/api/v1/${pUrl}`, body)
-      .then(({ data }) => {
-        setData(data);
-        callBackFun(data, true);
+      .then((response) => {
+        setData(response.data);
+        callBackFun(response, true);
       })
       .catch((err) => {
         setErrorMessage({

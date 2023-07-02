@@ -36,18 +36,47 @@ const LoginPage = () => {
     message: undefined,
     severity: "success",
   });
+
+  //*after login handling response here --------
   function handleResponse(response) {
-    let token = response?.token;
-    token && sessionStorage.setItem("accessToken", token);
+    if (response.status !== 200) {
+      setAlert((prev) => ({
+        ...prev,
+        open: true,
+        message: response.data.message,
+        severity: "error",
+      }));
+      return;
+    }
+    if (!response.data?.user?.isEmailVerifiedToken) {
+      setAlert({
+        open: true,
+        message: "Please verify your email address",
+        severity: "error",
+      });
+      return;
+    }
+
+    //* to save userDetails = in session
+    let user = response.data?.user;
+    const userString = JSON.stringify(user);
+    user && sessionStorage.setItem("userDetails", userString);
+
+    //* to save accessToken= in cookies
+    let token = response.data?.token;
+    const cookie = `access_Token=${encodeURIComponent(token)}`;
+    token && (document.cookie = cookie);
+
     setAlert((prev) => ({
       ...prev,
       open: true,
-      message: response.message,
-      severity: token ? "success" : "error",
-      // severity: "error",
+      message: response.data.message,
+      severity: "success",
     }));
-    console.log("handleResponse ~-------- token: >>", token);
+    router.push("/");
   }
+  //*after login handling response here ++++++++
+
   function onSubmit(values, { setSubmitting }) {
     setTimeout(() => {
       setSubmitting(false);
