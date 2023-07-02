@@ -1,3 +1,4 @@
+"use client";
 import axios from "axios";
 import { useCallback, useState } from "react";
 // import { process } from "process";
@@ -45,7 +46,7 @@ const useAPI = () => {
       })
       .catch((err) => {
         setErrorMessage({
-          message: err.response.data.message ?? "",
+          message: err.response?.data?.message ?? "Something went wrong",
           type: "error",
           alertError: true,
         });
@@ -69,7 +70,7 @@ const useAPI = () => {
       .catch((err) => {
         callBackFun(err, false);
         setErrorMessage({
-          message: err.response.data.message ?? "",
+          message: err.response?.data?.message ?? "",
           type: "error",
           alertError: true,
         });

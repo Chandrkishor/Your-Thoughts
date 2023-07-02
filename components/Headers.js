@@ -21,6 +21,7 @@ import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import MicIcon from "@mui/icons-material/Mic";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
+// import { cookies } from "next/headers";
 
 const Headers = () => {
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -28,6 +29,7 @@ const Headers = () => {
   const handleDrawerToggle = () => {
     setOpenDrawer(!openDrawer);
   };
+  // console.log(document.cookie);
 
   const navigateTo = (path) => {
     setOpenDrawer(false);

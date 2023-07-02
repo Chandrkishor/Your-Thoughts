@@ -1,10 +1,10 @@
 "use client";
-import React, { useCallback } from "react";
-import { Button, Grid, Paper } from "@mui/material";
-import Link from "next/link";
+import React, { useCallback, useState } from "react";
+import { Button, Grid, Paper, Snackbar } from "@mui/material";
 import MyForm from "@/components/FormBuilder/FormBuilder";
 import useAPI from "@/components/GeneralAPICaller";
 import { useRouter } from "next/navigation";
+import SetAlertComponent from "@/components/AlertHanlder";
 
 const FormFieldArray = [
   {
@@ -21,38 +21,6 @@ const FormFieldArray = [
     label: "Password",
     size: { sm: 6, md: 4 },
   },
-  // {
-  //   control: "checkbox",
-  //   name: "checkboxTest",
-  //   label: "My checkbox",
-  // },
-  // {
-  //   control: "switch",
-  //   name: "switchTest",
-  //   label: "My switch",
-  // },
-  // {
-  //   control: "autocomplete",
-  //   name: "loginSelectText",
-  //   label: "My first select",
-  //   options: [
-  //     { _id: "someId1", label: "TestLabel" },
-  //     { _id: "someId2", label: "TestLabel2" },
-  //     { _id: "someId3", label: "TestLabel3" },
-  //   ],
-  //   OptionUrl: "http://localhost:3000/api/v1/autocompleteOptions",
-  // },
-  // {
-  //   control: "radioGroup",
-  //   name: "radioGroup",
-  //   row: true,
-  //   label: "My first Radio Group",
-  //   options: [
-  //     { _id: "someId1", label: "radioGroup 1" },
-  //     { _id: "someId2", label: "radioGroup 2" },
-  //     { _id: "someId3", label: "radioGroup 3" },
-  //   ],
-  // },
 ];
 
 let initialVal = {
@@ -63,19 +31,22 @@ let initialVal = {
 const LoginPage = () => {
   const { post } = useAPI();
   const router = useRouter();
-
-  //* localhost:5000/api/v1/register
-  //     {
-  //   "name": "Ck",
-  //   "email": "Ck2@mail.com",
-  //   "password": "1234",
-  //   "age": 26,
-  //   "gender": "male",
-  //   "contact": "9953565656"
-  // }
-
+  const [alert, setAlert] = useState({
+    open: false,
+    message: undefined,
+    severity: "success",
+  });
   function handleResponse(response) {
-    console.log("handleResponse ~ response: >>", response);
+    let token = response?.token;
+    token && sessionStorage.setItem("accessToken", token);
+    setAlert((prev) => ({
+      ...prev,
+      open: true,
+      message: response.message,
+      severity: token ? "success" : "error",
+      // severity: "error",
+    }));
+    console.log("handleResponse ~-------- token: >>", token);
   }
   function onSubmit(values, { setSubmitting }) {
     setTimeout(() => {
@@ -117,6 +88,11 @@ const LoginPage = () => {
           </Grid>
         </Grid>
       </Paper>
+      <SetAlertComponent
+        open={alert?.open}
+        message={alert?.message}
+        severity={alert?.severity}
+      />
     </Grid>
   );
 };
