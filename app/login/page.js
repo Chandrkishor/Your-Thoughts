@@ -1,6 +1,13 @@
 "use client";
 import React, { useCallback, useState } from "react";
-import { Button, Grid, Paper, Snackbar } from "@mui/material";
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  Grid,
+  Paper,
+  Snackbar,
+} from "@mui/material";
 import MyForm from "@/components/FormBuilder/FormBuilder";
 import useAPI from "@/components/GeneralAPICaller";
 import { useRouter } from "next/navigation";
@@ -31,6 +38,7 @@ let initialVal = {
 const LoginPage = () => {
   const { post } = useAPI();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState({
     open: false,
     message: undefined,
@@ -46,6 +54,8 @@ const LoginPage = () => {
         message: response.data.message,
         severity: "error",
       }));
+      setIsLoading(false);
+
       return;
     }
     if (!response.data?.user?.isEmailVerifiedToken) {
@@ -54,6 +64,7 @@ const LoginPage = () => {
         message: "Please verify your email address",
         severity: "error",
       });
+      setIsLoading(false);
       return;
     }
 
@@ -73,6 +84,7 @@ const LoginPage = () => {
       message: response.data.message,
       severity: "success",
     }));
+    setIsLoading(false);
     router.push("/");
   }
   //*after login handling response here ++++++++
@@ -81,12 +93,16 @@ const LoginPage = () => {
     setTimeout(() => {
       setSubmitting(false);
     }, 1000);
+    setIsLoading(true);
     post("login", values, handleResponse);
   }
   const handleSignUP = useCallback(() => {
     router.push("/sign_up");
   }, []);
 
+  // const loaderHandler = () => {
+  //   setIsLoading(true);
+  // };
   return (
     <Grid>
       <Paper sx={{ maxWidth: 600, margin: "auto", p: 4 }}>
@@ -122,6 +138,11 @@ const LoginPage = () => {
         message={alert?.message}
         severity={alert?.severity}
       />
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </Grid>
   );
 };

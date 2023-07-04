@@ -1,12 +1,20 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Button, Paper, Grid } from "@mui/material";
 import useAPI from "@/components/GeneralAPICaller";
 import { useRouter } from "next/navigation";
 import MyForm from "@/components/FormBuilder/FormBuilder";
+import SetAlertComponent from "@/components/AlertHanlder";
 
 const FormFieldArray = [
+  {
+    control: "TextField2",
+    name: "name",
+    type: "text",
+    label: "Full Name",
+    size: { sm: 6, md: 4 },
+  },
   {
     control: "TextField2",
     name: "email",
@@ -21,13 +29,7 @@ const FormFieldArray = [
     label: "Password",
     size: { sm: 6, md: 4 },
   },
-  {
-    control: "TextField2",
-    name: "fullName",
-    type: "text",
-    label: "Full Name",
-    size: { sm: 6, md: 4 },
-  },
+
   {
     control: "TextField2",
     name: "age",
@@ -45,24 +47,24 @@ const FormFieldArray = [
   //   name: "switchTest",
   //   label: "My switch",
   // },
-  {
-    control: "autocomplete",
-    name: "gender",
-    label: "Gender",
-    options: [
-      { _id: "male", label: "Male" },
-      { _id: "female", label: "Female" },
-      { _id: "other", label: "Other" },
-    ],
-    // OptionUrl: "http://localhost:3000/api/v1/autocompleteOptions",
-  },
-  {
-    control: "TextField2",
-    name: "contact",
-    type: "text",
-    label: "Contact No",
-    size: { sm: 6, md: 4 },
-  },
+  // {
+  //   control: "autocomplete",
+  //   name: "gender",
+  //   label: "Gender",
+  //   options: [
+  //     { _id: "male", label: "Male" },
+  //     { _id: "female", label: "Female" },
+  //     { _id: "other", label: "Other" },
+  //   ],
+  //   // OptionUrl: "http://localhost:3000/api/v1/autocompleteOptions",
+  // },
+  // {
+  //   control: "TextField2",
+  //   name: "contact",
+  //   type: "text",
+  //   label: "Contact No",
+  //   size: { sm: 6, md: 4 },
+  // },
   // {
   //   control: "radioGroup",
   //   name: "radioGroup",
@@ -79,9 +81,35 @@ const FormFieldArray = [
 const SignUp = () => {
   const { post } = useAPI();
   const router = useRouter();
+  const [alert, setAlert] = useState({
+    open: false,
+    message: undefined,
+    severity: "success",
+  });
+
+  const handleResponse = (response) => {
+    console.log("handleResponse ~-------- response: >>", response);
+    if (response.status !== 201) {
+      setAlert((prev) => ({
+        ...prev,
+        open: true,
+        message: response?.data?.message || "",
+        severity: "error",
+      }));
+      return;
+    }
+
+    setAlert((prev) => ({
+      ...prev,
+      open: true,
+      message: response?.data?.message || "",
+      severity: "success",
+    }));
+    router.push("/login");
+  };
 
   const handleSubmit = (data) => {
-    console.log(data);
+    post("register", data, handleResponse);
   };
 
   const handleLogin = useCallback(() => {
@@ -110,6 +138,11 @@ const SignUp = () => {
           </Button>
         </Grid>
       </Paper>
+      <SetAlertComponent
+        open={alert?.open}
+        message={alert?.message}
+        severity={alert?.severity}
+      />
     </Grid>
   );
 };
