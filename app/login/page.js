@@ -1,17 +1,11 @@
 "use client";
-import React, { useCallback, useState } from "react";
-import {
-  Backdrop,
-  Button,
-  CircularProgress,
-  Grid,
-  Paper,
-  Snackbar,
-} from "@mui/material";
+import React, { useCallback, useContext, useState } from "react";
+import { Backdrop, Button, CircularProgress, Grid, Paper } from "@mui/material";
 import MyForm from "@/components/FormBuilder/FormBuilder";
 import useAPI from "@/components/GeneralAPICaller";
 import { useRouter } from "next/navigation";
-import SetAlertComponent from "@/components/AlertHanlder";
+import { General } from "../store/GeneralContext";
+import { Loader2 } from "@/components/Loader";
 
 const FormFieldArray = [
   {
@@ -38,12 +32,7 @@ let initialVal = {
 const LoginPage = () => {
   const { post } = useAPI();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [alert, setAlert] = useState({
-    open: false,
-    message: undefined,
-    severity: "success",
-  });
+  let { setAlert, setIsLoading } = useContext(General);
 
   //*after login handling response here --------
   function handleResponse(response) {
@@ -55,7 +44,6 @@ const LoginPage = () => {
         severity: "error",
       }));
       setIsLoading(false);
-
       return;
     }
     if (!response.data?.user?.isEmailVerifiedToken) {
@@ -67,17 +55,14 @@ const LoginPage = () => {
       setIsLoading(false);
       return;
     }
-
     //* to save userDetails = in session
     let user = response.data?.user;
     const userString = JSON.stringify(user);
     user && sessionStorage.setItem("userDetails", userString);
-
     //* to save accessToken= in cookies
     let token = response.data?.token;
     const cookie = `access_Token=${encodeURIComponent(token)}`;
     token && (document.cookie = cookie);
-
     setAlert((prev) => ({
       ...prev,
       open: true,
@@ -100,9 +85,6 @@ const LoginPage = () => {
     router.push("/sign_up");
   }, []);
 
-  // const loaderHandler = () => {
-  //   setIsLoading(true);
-  // };
   return (
     <Grid>
       <Paper sx={{ maxWidth: 600, margin: "auto", p: 4 }}>
@@ -133,16 +115,6 @@ const LoginPage = () => {
           </Grid>
         </Grid>
       </Paper>
-      <SetAlertComponent
-        open={alert?.open}
-        message={alert?.message}
-        severity={alert?.severity}
-      />
-      <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
     </Grid>
   );
 };

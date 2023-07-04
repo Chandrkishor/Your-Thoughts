@@ -1,5 +1,4 @@
 "use client";
-import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -22,6 +21,8 @@ import Link from "next/link";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
+import { useCallback, useContext, useState } from "react";
+import { General } from "@/app/store/GeneralContext";
 
 const darkTheme = createTheme({
   palette: {
@@ -82,35 +83,25 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function Navbar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const [isLogin, setIsLogin] = React.useState(false);
-  console.log("Navbar ~-------- isLogin: >>", isLogin);
   const router = useRouter();
+  let { isLogin, setIsLogin, setAlert } = useContext(General);
 
-  let userDetails = sessionStorage.getItem("userDetails");
-  userDetails = JSON.parse(userDetails);
-  console.log("Headers ~-------- userDetails: >>", userDetails);
-
-  React.useEffect(() => {
-    // The user is logged in.
-    if (userDetails?.name || userDetails?.email) {
-      setIsLogin(true);
-    } else {
-      setIsLogin(false);
-      // The user is not logged in.
-    }
-  }, [userDetails]);
-
-  const handleLogout = React.useCallback(() => {
+  const handleLogout = useCallback(() => {
     sessionStorage.clear();
     const cookie = `access_Token=${encodeURIComponent(null)}`;
     document.cookie = cookie;
     router.push("/login");
+    setAlert({
+      open: true,
+      message: "Successfully logged out",
+      severity: "success",
+    });
+    setAnchorEl(null);
+    setIsLogin(false);
   }, []);
 
   const handleProfileMenuOpen = (event) => {

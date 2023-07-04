@@ -47,10 +47,10 @@ export default function MyForm({
     email: Yup.string()
       .email("Invalid email format")
       .required("Email is required"),
-    // name: Yup.string().required("Name is required"),
     password: Yup.string()
       .required("Password is required")
       .min(4, "Password must be at least 4 characters"),
+    // name: Yup.string().required("Name is required"),
     // selectOption: Yup.string().required("Please select an option"),
     // radioButton: Yup.string().required("Please select one option"),
     // checkbox: Yup.array().min(1, "Please select at least one option"),

@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+"use client";
+import { useContext } from "react";
+
 import ClearIcon from "@mui/icons-material/Clear";
 import { IconButton, Snackbar, styled } from "@mui/material";
+import { General } from "@/app/store/GeneralContext";
 
 const StyledSnackbar = styled(Snackbar)(({ theme, severity }) => ({
   "& .MuiSnackbarContent-root": {
@@ -22,28 +25,16 @@ const StyledSnackbar = styled(Snackbar)(({ theme, severity }) => ({
   },
 }));
 
-const SetAlertComponent = ({ open, message, severity }) => {
-  const [alert, setAlert] = useState({
-    open: false,
-    message: undefined,
-    severity: "success",
-    vertical: "top",
-    horizontal: "right",
-  });
-
-  useEffect(() => {
-    setAlert((prev) => ({
-      ...prev,
-      open: open,
-      message: message,
-      severity: severity,
-    }));
-  }, [open, message, severity]);
+const SetAlertComponent = () => {
+  let { alert, setAlert } = useContext(General);
+  console.log("SetAlertComponent ~-------- alert: >>", alert);
 
   const handleClose = () => {
     setAlert((prev) => ({
       ...prev,
       open: false,
+      message: undefined,
+      severity: "success",
     }));
   };
 
@@ -53,8 +44,8 @@ const SetAlertComponent = ({ open, message, severity }) => {
       open={alert.open}
       autoHideDuration={4000}
       anchorOrigin={{
-        vertical: alert.vertical,
-        horizontal: alert.horizontal,
+        vertical: alert.vertical || "top",
+        horizontal: alert.horizontal || "right",
       }}
       action={
         <IconButton

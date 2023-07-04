@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useContext } from "react";
 import { Button, Paper, Grid } from "@mui/material";
 import useAPI from "@/components/GeneralAPICaller";
 import { useRouter } from "next/navigation";
 import MyForm from "@/components/FormBuilder/FormBuilder";
-import SetAlertComponent from "@/components/AlertHanlder";
+import { General } from "../store/GeneralContext";
 
 const FormFieldArray = [
   {
@@ -77,18 +77,18 @@ const FormFieldArray = [
   //   ],
   // },
 ];
-
+const initialVal = {
+  name: "",
+  email: "",
+  password: "",
+  age: "",
+};
 const SignUp = () => {
   const { post } = useAPI();
   const router = useRouter();
-  const [alert, setAlert] = useState({
-    open: false,
-    message: undefined,
-    severity: "success",
-  });
+  let { setIsLoading, setAlert } = useContext(General);
 
   const handleResponse = (response) => {
-    console.log("handleResponse ~-------- response: >>", response);
     if (response.status !== 201) {
       setAlert((prev) => ({
         ...prev,
@@ -96,19 +96,21 @@ const SignUp = () => {
         message: response?.data?.message || "",
         severity: "error",
       }));
+      setIsLoading(false);
       return;
     }
-
     setAlert((prev) => ({
       ...prev,
       open: true,
       message: response?.data?.message || "",
       severity: "success",
     }));
+    setIsLoading(false);
     router.push("/login");
   };
 
   const handleSubmit = (data) => {
+    setIsLoading(true);
     post("register", data, handleResponse);
   };
 
@@ -128,6 +130,7 @@ const SignUp = () => {
           formSize="sm"
           SpecialBtn={true}
           handleCancel={handleLogin}
+          initialVal={initialVal}
         />
         <Grid container sx={{ mt: 1 }}>
           <Button
@@ -138,11 +141,6 @@ const SignUp = () => {
           </Button>
         </Grid>
       </Paper>
-      <SetAlertComponent
-        open={alert?.open}
-        message={alert?.message}
-        severity={alert?.severity}
-      />
     </Grid>
   );
 };
