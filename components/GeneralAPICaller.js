@@ -1,58 +1,52 @@
+"use client";
 import axios from "axios";
 import { useCallback, useState } from "react";
+// import { process } from "process";
 
 const useAPI = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [alertError, setAlertError] = useState(false);
   const [errorMessage, setErrorMessage] = useState({
     message: "",
     type: "error",
     alertError: false,
   });
 
-  const API_BASEURL = process.env.API_BASEURL;
-  const API_BASENAME = process.env.API_BASENAME;
-  const API_BASEPATH = process.env.API_BASEPATH;
-
-  // console.log("useAPI ~ API_BASEURL: >>", API_BASEURL);
-  const get = useCallback(async (path, callBackData) => {
-    try {
-      setLoading(true);
-      await axios
-        .get(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${path}`)
-        .then(({ data }) => {
-          setData(data);
-          callBackData(data, true);
-        });
-    } catch (err) {
-      console.log("err", err);
-      callBackData(err, false);
-      setErrorMessage((pre) => ({
-        ...pre,
-        message: err.message,
-        type: "error",
-        alertError: true,
-      }));
-    } finally {
-      setLoading(false);
-    }
+  const get = useCallback((path, callBackData) => {
+    axios
+      // .get(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${path}`)
+      .get(`http://localhost:5000/api/v1/${path}`)
+      .then(({ data }) => {
+        setData(data);
+        callBackData(data, true);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        callBackData(err, false);
+        setErrorMessage((pre) => ({
+          ...pre,
+          message: err.message,
+          type: "error",
+          alertError: true,
+        }));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const post = useCallback((pUrl, body, callBackFun = () => {}) => {
     setLoading(true);
     axios
-      .post(
-        `${process.env.API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`,
-        body
-      )
-      .then(({ data }) => {
-        setData(data);
-        callBackFun(data, true);
+      // .post(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`, body)
+      .post(`http://localhost:5000/api/v1/${pUrl}`, body)
+      .then((response) => {
+        setData(response.data);
+        callBackFun(response, true);
       })
       .catch((err) => {
         setErrorMessage({
-          message: err.response.data.message ?? "",
+          message: err.response?.data?.message ?? "Something went wrong",
           type: "error",
           alertError: true,
         });
@@ -67,10 +61,8 @@ const useAPI = () => {
   const put = useCallback((pUrl, body) => {
     setLoading(true);
     axios
-      .patch(
-        `${process.env.API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`,
-        body
-      )
+      // .patch(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`, body)
+      .patch(`http://localhost:5000/api/v1/${pUrl}`, body)
       .then(() => {
         setData(data);
         callBackFun(data, true);
@@ -78,7 +70,7 @@ const useAPI = () => {
       .catch((err) => {
         callBackFun(err, false);
         setErrorMessage({
-          message: err.response.data.message ?? "",
+          message: err.response?.data?.message ?? "",
           type: "error",
           alertError: true,
         });

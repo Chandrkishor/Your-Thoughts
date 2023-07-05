@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   AppBar,
@@ -21,13 +21,29 @@ import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
 import MicIcon from "@mui/icons-material/Mic";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Link from "next/link";
+// import { cookies } from "next/headers";
 
 const Headers = () => {
   const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+  // let userDetails = sessionStorage.getItem("userDetails");
+  // userDetails = JSON.parse(userDetails);
+  // console.log("Headers ~-------- userDetails: >>", userDetails);
+
+  // useEffect(() => {
+  //   // The user is logged in.
+  //   if (userDetails?.name || userDetails?.email) {
+  //     setIsLogin(true);
+  //   } else {
+  //     setIsLogin(false);
+  //     // The user is not logged in.
+  //   }
+  // }, [userDetails]);
 
   const handleDrawerToggle = () => {
     setOpenDrawer(!openDrawer);
   };
+  // console.log(document.cookie);
 
   const navigateTo = (path) => {
     setOpenDrawer(false);

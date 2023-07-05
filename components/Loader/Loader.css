@@ -1,0 +1,163 @@
+/* style one */
+/* .loader-container {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   z-index: 9999;
+}
+
+.loader {
+   border: 4px solid rgba(0, 0, 0, 0.1);
+   border-top: 4px solid #767676;
+   border-radius: 50%;
+   width: 30px;
+   height: 30px;
+   animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+   0% {
+      transform: rotate(0deg);
+   }
+
+   100% {
+      transform: rotate(360deg);
+   }
+} */
+
+/* style two */
+.loader-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #007bff;
+    /* Change the color of the top border */
+    border-radius: 50%;
+    width: 40px;
+    /* Increase the size of the loader */
+    height: 40px;
+    /* Increase the size of the loader */
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+
+/* /** ---------------------for loader2 style------------------------ */
+.loader-container2 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.loader2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader2 div {
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    border-radius: 50%;
+    background-color: #007bff;
+    /* Change the color of the dots */
+    animation: pulse 0.8s ease-in-out infinite;
+}
+
+.loader2 div:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.loader2 div:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.loader2 div:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ---------------------- For loader 3----------------------------- */
+.loader-container3 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+}
+
+.loader3 {
+    width: 60px;
+    height: 60px;
+    border: 4px solid #007bff;
+    /* Change the color of the border */
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.loader-inner3 {
+    vertical-align: top;
+    display: inline-block;
+    width: 100%;
+    background-color: #007bff;
+    /* Change the color of the bars */
+    animation: expand 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes expand {
+    0% {
+        height: 0;
+    }
+
+    50% {
+        height: 100%;
+    }
+
+    100% {
+        height: 0;
+    }
+}

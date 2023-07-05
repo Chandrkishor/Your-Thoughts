@@ -4,8 +4,12 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Footer from "./components/Footer";
-import Headers from "./components/Headers";
+import Headers from "@/components/Headers";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/NavBar";
+import GeneralContext from "./store/GeneralContext";
+import SetAlertComponent from "@/components/AlertHanlder";
+import { Loader } from "@/components/Loader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +22,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Headers />
-        {children}
-        <Footer />
+        <GeneralContext>
+          <Navbar />
+          {children}
+          <Footer />
+          <SetAlertComponent />
+          <Loader />
+        </GeneralContext>
       </body>
     </html>
   );
