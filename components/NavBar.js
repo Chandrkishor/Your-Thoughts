@@ -23,6 +23,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/navigation";
 import { useCallback, useContext, useState } from "react";
 import { General } from "@/app/store/GeneralContext";
+import { saveCookies } from "@/app/utils/AppUtils";
 
 const darkTheme = createTheme({
   palette: {
@@ -92,8 +93,7 @@ export default function Navbar() {
 
   const handleLogout = useCallback(() => {
     sessionStorage.clear();
-    const cookie = `access_Token=${encodeURIComponent(null)}`;
-    document.cookie = cookie;
+    saveCookies("access_Token", null);
     router.push("/login");
     setAlert({
       open: true,

@@ -5,6 +5,7 @@ import MyForm from "@/components/FormBuilder/FormBuilder";
 import useAPI from "@/components/GeneralAPICaller";
 import { useRouter } from "next/navigation";
 import { General } from "../store/GeneralContext";
+import { saveCookies, setItemSession } from "../utils/AppUtils";
 
 const FormFieldArray = [
   {
@@ -24,8 +25,8 @@ const FormFieldArray = [
 ];
 
 let initialVal = {
-  email: "ck@mail.com",
-  password: "1234",
+  email: "",
+  password: "",
 };
 const typeValidation = [
   { name: "password", type: "password" },
@@ -43,7 +44,7 @@ const LoginPage = () => {
       setAlert((prev) => ({
         ...prev,
         open: true,
-        message: response.data.message,
+        message: response?.data?.message || "",
         severity: "error",
       }));
       setIsLoading(false);
@@ -60,12 +61,11 @@ const LoginPage = () => {
     }
     //* to save userDetails = in session
     let user = response.data?.user;
-    const userString = JSON.stringify(user);
-    user && sessionStorage.setItem("userDetails", userString);
+    setItemSession("userDetails", user);
+
     //* to save accessToken= in cookies
     let token = response.data?.token;
-    const cookie = `access_Token=${encodeURIComponent(token)}`;
-    token && (document.cookie = cookie);
+    saveCookies("access_Token", token);
     setAlert((prev) => ({
       ...prev,
       open: true,
