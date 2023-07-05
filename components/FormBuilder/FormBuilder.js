@@ -18,12 +18,12 @@ import {
 } from "formik-mui";
 import { Formik, Form, Field, FastField } from "formik";
 import { TextField as MuiTextField } from "@mui/material";
-import * as Yup from "yup";
-import React, { useEffect, useState } from "react";
+import validator from "./Validation";
 
 export default function MyForm({
   fieldsArray = [],
   initialVal = {},
+  typeValidation = [],
   onSubmitFun = () => {},
   title = null,
   handleCancel = () => {},
@@ -32,7 +32,6 @@ export default function MyForm({
   formSize = "sm",
   SpecialBtn = false,
 }) {
-  // const [initialValue, setInitialValues] = useState({});
   let width = "600px";
   switch ([formSize]) {
     case "sm":
@@ -42,24 +41,58 @@ export default function MyForm({
     case "lg":
       width = "1200px";
   }
+  // const validationSchema = Yup.object().shape(
+  //   );
+  // let validationSchema = validator();
 
-  const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email("Invalid email format")
-      .required("Email is required"),
-    password: Yup.string()
-      .required("Password is required")
-      .min(4, "Password must be at least 4 characters"),
-    // name: Yup.string().required("Name is required"),
-    // selectOption: Yup.string().required("Please select an option"),
-    // radioButton: Yup.string().required("Please select one option"),
-    // checkbox: Yup.array().min(1, "Please select at least one option"),
-  });
+  // const validationSchema = Yup.object().shape({
+  //   email: Yup.string()
+  //     .email('Invalid email format')
+  //     .required('Email is required'),
+  //   password: Yup.string()
+  //     .required('Password is required')
+  //     .min(8, 'Password must be at least 8 characters')
+  //     .matches(
+  //       /^(?=.*[A-Z])/,
+  //       'Password must contain at least one uppercase letter'
+  //     ),
+  //   name: Yup.string().required('Name is required'),
+  //   selectOption: Yup.string().required('Please select an option'),
+  //   radioButton: Yup.string().required('Please select one option'),
+  //   checkbox: Yup.array().min(1, 'Please select at least one option'),
+  //   phoneNumber: Yup.string()
+  //     .required('Phone number is required')
+  //     .matches(
+  //       /^[0-9]{10}$/,
+  //       'Phone number must be a 10-digit number without any special characters'
+  //     ),
+  //   address: Yup.string()
+  //     .required('Address is required')
+  //     .matches(
+  //       /^[a-zA-Z0-9 .,-]+$/,
+  //       'Address can only contain alphanumeric characters, spaces, periods, commas, and hyphens'
+  //     ),
+  //   postalCode: Yup.string()
+  //     .required('Postal code is required')
+  //     .matches(/^[0-9]{6}$/, 'Postal code must be a 6-digit number'),
+  //   dateOfBirth: Yup.date().required('Date of birth is required'),
+  //   termsAndConditions: Yup.boolean().oneOf(
+  //     [true],
+  //     'Please accept the terms and conditions'
+  //   ),
+  //   additionalText: Yup.string()
+  //     .required('Additional text is required')
+  //     .max(125, 'Additional text cannot exceed 125 characters')
+  //     .matches(
+  //       /^[a-zA-Z0-9]+$/,
+  //       'Additional text can only contain alphanumeric characters'
+  //     ),
+  // });
 
   return (
     <Formik
       initialValues={initialVal ?? {}}
-      validationSchema={validationSchema}
+      validationSchema={validator(typeValidation)}
       onSubmit={onSubmitFun}>
       {({ submitForm, isSubmitting, errors, touched }) => (
         <Form>

@@ -83,6 +83,13 @@ const initialVal = {
   password: "",
   age: "",
 };
+
+const typeValidation = [
+  { name: "password", type: "password" },
+  { name: "name", type: "name" },
+  { name: "email", type: "email" },
+  { name: "age", type: "age" },
+];
 const SignUp = () => {
   const { post } = useAPI();
   const router = useRouter();
@@ -131,6 +138,7 @@ const SignUp = () => {
           SpecialBtn={true}
           handleCancel={handleLogin}
           initialVal={initialVal}
+          typeValidation={typeValidation}
         />
         <Grid container sx={{ mt: 1 }}>
           <Button

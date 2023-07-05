@@ -1,17 +1,16 @@
 "use client";
-import React, { useCallback, useContext, useState } from "react";
-import { Backdrop, Button, CircularProgress, Grid, Paper } from "@mui/material";
+import React, { useCallback, useContext } from "react";
+import { Button, Grid, Paper } from "@mui/material";
 import MyForm from "@/components/FormBuilder/FormBuilder";
 import useAPI from "@/components/GeneralAPICaller";
 import { useRouter } from "next/navigation";
 import { General } from "../store/GeneralContext";
-import { Loader2 } from "@/components/Loader";
 
 const FormFieldArray = [
   {
     control: "TextField2",
     name: "email",
-    type: "text",
+    type: "email",
     label: "Email",
     size: { sm: 6, md: 4 },
   },
@@ -28,6 +27,10 @@ let initialVal = {
   email: "ck@mail.com",
   password: "1234",
 };
+const typeValidation = [
+  { name: "password", type: "password" },
+  { name: "email", type: "email" },
+];
 
 const LoginPage = () => {
   const { post } = useAPI();
@@ -98,6 +101,7 @@ const LoginPage = () => {
           formSize="sm"
           SpecialBtn={true}
           handleCancel={handleSignUP}
+          typeValidation={typeValidation}
         />
         <Grid container spacing={2} sx={{ mt: 3 }}>
           <Grid item xs={12}>
