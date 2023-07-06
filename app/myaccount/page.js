@@ -1,13 +1,12 @@
 "use client";
 
-// import React, { useCallback, useContext } from "react";
-import { Button, Paper, Grid, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Button, Paper, Grid } from "@mui/material";
 // import useAPI from "@/components/GeneralAPICaller";
 // import { useRouter } from "next/navigation";
 import MyForm from "@/components/FormBuilder/FormBuilder";
 // import { General } from "../store/GeneralContext";
 import PopupWrapper from "@/components/FormBuilder/DialogWrapper";
-import { useState } from "react";
 
 const FormFieldArray = [
   {
@@ -68,58 +67,56 @@ const typeValidation = [
   { name: "image", type: "age" },
   { name: "contact", type: "phoneNumber" },
 ];
-const UserProfile = () => {
-  // const { post } = useAPI();
-  // const router = useRouter();
+const MyAccount = () => {
+  //   const { post } = useAPI();
+  //   const router = useRouter();
   const [open, setOpen] = useState(false);
-  // let { setIsLoading, setAlert } = useContext(General);
+  //   let { setIsLoading, setAlert } = useContext(General);
 
-  // const handleResponse = (response) => {
-  //   if (response.status !== 201) {
+  //   const handleResponse = (response) => {
+  //     if (response.status !== 201) {
+  //       setAlert((prev) => ({
+  //         ...prev,
+  //         open: true,
+  //         message: response?.data?.message || "",
+  //         severity: "error",
+  //       }));
+  //       setIsLoading(false);
+  //       return;
+  //     }
   //     setAlert((prev) => ({
   //       ...prev,
   //       open: true,
   //       message: response?.data?.message || "",
-  //       severity: "error",
+  //       severity: "success",
   //     }));
   //     setIsLoading(false);
-  //     return;
-  //   }
-  //   setAlert((prev) => ({
-  //     ...prev,
-  //     open: true,
-  //     message: response?.data?.message || "",
-  //     severity: "success",
-  //   }));
-  //   setIsLoading(false);
-  //   // router.push("/login");
-  // };
+  //     // router.push("/login");
+  //   };
 
   const handleSubmit = (data) => {
     console.log("handleSubmit ~-------- data: >>", data);
     // setIsLoading(true);
     // post("register", data, handleResponse);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
-
   return (
     <Grid>
-      <Paper sx={{ maxWidth: "95%", margin: "auto", p: 2 }}>
-        <Typography>
-          this page will show all users profile not my Profile or my Account
-        </Typography>
+      <Paper sx={{ maxWidth: 600, margin: "auto", p: 4 }}>
         <Button variant="outlined" onClick={() => setOpen(true)}>
-          View user profile
+          Open edit my account edit form
         </Button>
       </Paper>
       <PopupWrapper
         open={open}
         handleClose={handleClose}
         maxWidth={"sm"}
-        title="User profile">
+        title="edit my account">
         <MyForm
+          // title="Sign-Up"
           fieldsArray={FormFieldArray}
           onSubmitFun={handleSubmit}
           cancelBtn="cancel"
@@ -135,4 +132,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default MyAccount;

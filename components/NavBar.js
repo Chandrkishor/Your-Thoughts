@@ -117,6 +117,11 @@ export default function Navbar() {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
+  const handleRoute = (val) => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+    router.push(`/${val}`);
+  };
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
@@ -138,8 +143,8 @@ export default function Navbar() {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}>
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={() => handleRoute("profile")}>Profile</MenuItem>
+      <MenuItem onClick={() => handleRoute("myaccount")}>My account</MenuItem>
       <MenuItem onClick={handleLogout}>
         <LogoutIcon sx={{ color: "#ff6161" }} />
         <span style={{ marginLeft: 5 }}>Log out</span>
