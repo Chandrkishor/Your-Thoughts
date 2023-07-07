@@ -1,5 +1,5 @@
 "use client";
-import { API_BASEURL } from "@/app/utils/Constant";
+import { API_BASENAME, API_BASEPATH, API_BASEURL } from "@/app/utils/Constant";
 import axios from "axios";
 import { useCallback, useState } from "react";
 // import { process } from "process";
@@ -13,10 +13,16 @@ const useAPI = () => {
     alertError: false,
   });
 
+  console.log(
+    "API_BASENAME, API_BASEPATH, API_BASEURL: >>",
+    API_BASENAME,
+    API_BASEPATH,
+    API_BASEURL
+  );
   const get = useCallback((path, callBackData) => {
     axios
-      // .get(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${path}`)
-      .get(`http://localhost:5000/api/v1/${path}`)
+      .get(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${path}`)
+      // .get(`http://localhost:5000/api/v1/${path}`)
       .then(({ data }) => {
         setData(data);
         callBackData(data, true);
@@ -39,8 +45,8 @@ const useAPI = () => {
   const post = useCallback((pUrl, body, callBackFun = () => {}) => {
     setLoading(true);
     axios
-      // .post(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`, body)
-      .post(`http://localhost:5000/api/v1/${pUrl}`, body)
+      .post(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`, body)
+      // .post(`http://localhost:5000/api/v1/${pUrl}`, body)
       .then((response) => {
         setData(response.data);
         callBackFun(response, true);

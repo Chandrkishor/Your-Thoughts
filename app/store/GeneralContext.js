@@ -16,6 +16,7 @@ function GeneralContext({ children }) {
   });
   let userDetails = sessionStorage.getItem("userDetails");
   userDetails = JSON.parse(userDetails);
+  // let userDetails = {};
 
   useEffect(() => {
     // The user is logged in.

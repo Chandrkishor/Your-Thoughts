@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 export const screens = {
   small: 640,
@@ -6,10 +6,10 @@ export const screens = {
   laptop: 1024,
   desktop: 1280,
 };
-export const API_BASEURL = process.env.API_BASEURL;
-export const API_BASENAME = process.env.API_BASENAME;
-export const API_BASEPATH = process.env.API_BASEPATH;
-export const UI_BASEURL = process.env.UI_BASEURL;
+export const API_BASEURL = process.env.NEXT_PUBLIC_API_BASEURL;
+export const API_BASENAME = process.env.NEXT_PUBLIC_API_BASENAME;
+export const API_BASEPATH = process.env.NEXT_PUBLIC_API_BASEPATH;
+export const UI_BASEURL = process.env.NEXT_PUBLIC_UI_BASEURL;
 // export const API_ENABLED =
 //   !process.env.REACT_APP_API_ENABLED ||
 //   process.env.REACT_APP_API_ENABLED === "false"
