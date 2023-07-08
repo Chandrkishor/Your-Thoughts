@@ -1,109 +1,86 @@
 "use client";
+import { General } from "@/app/store/GeneralContext";
 import { API_BASENAME, API_BASEPATH, API_BASEURL } from "@/app/utils/Constant";
 import axios from "axios";
-import { useCallback, useState } from "react";
-// import { process } from "process";
+import { useCallback, useContext, useState } from "react";
 
 const useAPI = () => {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState({
-    message: "",
-    type: "error",
-    alertError: false,
-  });
+  let { setIsLoading, setAlert } = useContext(General);
 
-  console.log(
-    "API_BASENAME, API_BASEPATH, API_BASEURL: >>",
-    API_BASENAME,
-    API_BASEPATH,
-    API_BASEURL
-  );
+  //* GET API
   const get = useCallback((path, callBackData) => {
+    setIsLoading(true);
     axios
-      .get(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${path}`)
-      // .get(`http://localhost:5000/api/v1/${path}`)
-      .then(({ data }) => {
-        setData(data);
-        callBackData(data, true);
+      .get(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${path}`, {
+        withCredentials: true, // Include cookies in the request
+      })
+      .then((response) => {
+        setData(response?.data ?? {});
+        callBackData(response, true);
       })
       .catch((err) => {
         console.log("err", err);
         callBackData(err, false);
-        setErrorMessage((pre) => ({
-          ...pre,
+        setAlert({
           message: err.message,
           type: "error",
-          alertError: true,
-        }));
+          open: true,
+        });
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   }, []);
-
+  //* POST API
   const post = useCallback((pUrl, body, callBackFun = () => {}) => {
-    setLoading(true);
+    setIsLoading(true);
     axios
-      .post(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`, body)
-      // .post(`http://localhost:5000/api/v1/${pUrl}`, body)
+      .post(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`, body, {
+        withCredentials: true, // Include cookies in the request
+      })
       .then((response) => {
         setData(response.data);
         callBackFun(response, true);
       })
-      .catch((err) => {
-        setErrorMessage({
-          message: err.response?.data?.message ?? "Something went wrong",
+      .catch((response) => {
+        setAlert({
+          message: response?.data?.message ?? "Something went wrong",
           type: "error",
-          alertError: true,
+          open: true,
         });
         callBackFun(err, false);
-        console.log("err", err);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   }, []);
-
+  //* PUT API
   const put = useCallback((pUrl, body) => {
-    setLoading(true);
+    setIsLoading(true);
     axios
-      // .patch(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`, body)
-      .patch(`http://localhost:5000/api/v1/${pUrl}`, body)
+      .patch(`http://localhost:5000/api/v1/${pUrl}`, body, {
+        withCredentials: true, // Include cookies in the request
+      })
       .then(() => {
         setData(data);
         callBackFun(data, true);
       })
-      .catch((err) => {
-        callBackFun(err, false);
-        setErrorMessage({
-          message: err.response?.data?.message ?? "",
+      .catch(({ response }) => {
+        callBackFun(response, false);
+        setAlert({
+          message: response?.data?.message ?? "",
           type: "error",
-          alertError: true,
+          open: true,
         });
-        console.log("err", err);
       })
       .finally(() => {
-        setLoading(false);
+        setIsLoading(false);
       });
   }, []);
 
-  const handleAlertClose = () => {
-    setErrorMessage((pre) => ({
-      ...pre,
-      message: "",
-      type: "error",
-      alertError: false,
-    }));
-  };
-
   return {
     data,
-    // alertError,
-    errorMessage,
-    setErrorMessage,
-    handleAlertClose,
-    loading,
     get,
     put,
     post,

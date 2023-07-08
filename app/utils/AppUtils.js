@@ -13,11 +13,9 @@ export const removeItemSession = (key) => {
 };
 //* for user details
 export const getUserDetails = () => {
-  let user_details = JSON.parse(
-    JSON.stringify(localStorage.getItem("user_details"))
-  );
-  if (user_details && Object.keys(user_details).length > 0) {
-    return JSON.parse(user_details);
+  let user_details = JSON.parse(sessionStorage.getItem("userDetails"));
+  if (user_details) {
+    return user_details;
   } else {
     return {};
   }
