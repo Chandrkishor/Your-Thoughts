@@ -9,6 +9,9 @@ import {
   Avatar,
   IconButton,
   Stack,
+  Tabs,
+  Tab,
+  Box,
 } from "@mui/material";
 // import { useRouter } from "next/navigation";
 import MyForm from "@/components/FormBuilder/FormBuilder";
@@ -24,8 +27,12 @@ import EmailIcon from "@mui/icons-material/Email";
 import LaunchIcon from "@mui/icons-material/Launch";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import ArticleIcon from "@mui/icons-material/Article";
+import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Image from "next/image";
 import profilePic from "./SquireLogo.png";
+import UserPosts from "./tabs/userPosts";
 
 const FormFieldArray = [
   {
@@ -98,11 +105,13 @@ const spanStyle = {
   //   padding: "2px 15px 2px 0px",
   // },
 };
+
 const UserProfile = () => {
   const { get } = useAPI();
   // const router = useRouter();
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({});
+  const [value, setValue] = useState(0);
 
   const user = getUserDetails();
   let { setAlert } = useContext(General);
@@ -125,6 +134,10 @@ const UserProfile = () => {
     console.log("handleSubmit: >>", data);
     // post("register", data, handleResponse);
   };
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -207,7 +220,7 @@ const UserProfile = () => {
                 <IconButton>
                   <LaunchIcon />{" "}
                 </IconButton>
-                {user.website ?? "www.cktiwari.com"}
+                {user.website ?? "www.tiwari.com"}
               </Typography>
               <Typography sx={spanStyle}>
                 <IconButton>
@@ -224,6 +237,81 @@ const UserProfile = () => {
           <Grid item xs={12} sx={{ textAlign: "center" }}>
             {user.education ?? "-- Education --"}
           </Grid>
+        </Grid>
+      </Paper>
+      {/* //* ******************---------------after normal details------********** */}
+      <Paper sx={{ width: "95%", margin: "auto", p: 2, mt: 2, mb: "50px" }}>
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              // bgcolor: "background.paper",
+              bgcolor: "#eee",
+              display: "flex",
+            }}>
+            <Tabs
+              id="-----"
+              orientation="vertical"
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+              sx={{
+                bgcolor: "background.paper",
+                borderRight: 1,
+                borderColor: "divider",
+                minWidth: "200px",
+              }}>
+              <Tab
+                icon={<ArticleIcon sx={{ fontSize: "20px" }} />}
+                iconPosition="start"
+                label="User Posts"
+                {...a11yProps(0)}
+                sx={{
+                  justifyContent: "flex-start", // Align content to the start
+                }}
+              />
+              <Tab
+                icon={<MilitaryTechIcon sx={{ fontSize: "20px" }} />}
+                iconPosition="start"
+                label="User Badges"
+                {...a11yProps(1)}
+                sx={{
+                  justifyContent: "flex-start", // Align content to the start
+                }}
+              />
+              <Tab
+                icon={<LocalOfferIcon sx={{ fontSize: "20px" }} />}
+                iconPosition="start"
+                label="Tags"
+                {...a11yProps(2)}
+                sx={{
+                  justifyContent: "flex-start",
+                }}
+              />
+              <Tab
+                icon={<ArticleIcon sx={{ fontSize: "20px" }} />}
+                iconPosition="start"
+                label="Item Four"
+                {...a11yProps(3)}
+                sx={{
+                  justifyContent: "flex-start", // Align content to the start
+                }}
+              />
+            </Tabs>
+            <TabPanel value={value} index={0}>
+              <UserPosts />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              User Batches
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+              Item Three
+            </TabPanel>
+            <TabPanel value={value} index={3}>
+              Item Four
+            </TabPanel>
+          </Box>
         </Grid>
       </Paper>
       <Grid item>
@@ -250,3 +338,25 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`vertical-tabpanel-${index}`}
+      aria-labelledby={`vertical-tab-${index}`}
+      {...other}>
+      {value === index && <Box sx={{ p: 1 }}>{children}</Box>}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
+  };
+}
