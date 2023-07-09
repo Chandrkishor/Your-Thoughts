@@ -1,26 +1,26 @@
 "use client";
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { Button, Grid, Paper } from "@mui/material";
 import MyForm from "@/components/FormBuilder/FormBuilder";
 import useAPI from "@/components/GeneralAPICaller";
 import { useRouter } from "next/navigation";
 import { General } from "../store/GeneralContext";
-import { saveCookies, setItemSession } from "../utils/AppUtils";
+import { setItemSession } from "../utils/AppUtils";
 
 const FormFieldArray = [
   {
-    control: "TextField2",
+    control: "TextField",
     name: "email",
     type: "email",
     label: "Email",
-    size: { sm: 6, md: 4 },
+    size: { sm: 12, md: 12 },
   },
   {
-    control: "TextField2",
+    control: "TextField",
     name: "password",
     type: "password",
     label: "Password",
-    size: { sm: 6, md: 4 },
+    size: { sm: 12, md: 12 },
   },
 ];
 
@@ -39,15 +39,14 @@ const LoginPage = () => {
   let { setAlert, setIsLoading } = useContext(General);
 
   //*after login handling response here --------
-  function handleResponse(response) {
-    if (response.status !== 200) {
+  function handleResponse(response, resType) {
+    if (!resType) {
       setAlert((prev) => ({
         ...prev,
         open: true,
         message: response?.data?.message || "",
         severity: "error",
       }));
-      setIsLoading(false);
       return;
     }
     if (!response.data?.user?.isEmailVerifiedToken) {
@@ -56,23 +55,18 @@ const LoginPage = () => {
         message: "Please verify your email address",
         severity: "error",
       });
-      setIsLoading(false);
       return;
     }
     //* to save userDetails = in session
     let user = response.data?.user;
-    setItemSession("userDetails", user);
+    user && setItemSession("userDetails", user);
 
-    //* to save accessToken= in cookies
-    let token = response.data?.token;
-    saveCookies("access_Token", token);
     setAlert((prev) => ({
       ...prev,
       open: true,
       message: response.data.message,
       severity: "success",
     }));
-    setIsLoading(false);
     router.push("/");
   }
   //*after login handling response here ++++++++
@@ -81,7 +75,6 @@ const LoginPage = () => {
     setTimeout(() => {
       setSubmitting(false);
     }, 1000);
-    setIsLoading(true);
     post("login", values, handleResponse);
   }
   const handleSignUP = useCallback(() => {

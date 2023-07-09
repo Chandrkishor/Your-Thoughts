@@ -40,21 +40,21 @@ const FormFieldArray = [
     name: "name",
     type: "text",
     label: "Full Name",
-    size: { sm: 6, md: 4 },
+    size: { sm: 12, md: 12, lg: 6 },
   },
   {
     control: "TextField2",
-    name: "email",
+    name: "bio",
     type: "text",
-    label: "Email",
-    size: { sm: 3, md: 2 },
+    label: "Your Bio",
+    size: { sm: 12, md: 12, lg: 6 },
   },
   {
     control: "TextField2",
-    name: "age",
-    type: "number",
-    label: "Age",
-    size: { sm: 6, md: 4 },
+    name: "dob",
+    type: "date",
+    label: "DOB",
+    size: { sm: 12, md: 12, lg: 6 },
   },
   {
     control: "autocomplete",
@@ -65,31 +65,53 @@ const FormFieldArray = [
       { _id: "female", label: "Female" },
       { _id: "other", label: "Other" },
     ],
+    size: { sm: 12, md: 12, lg: 6 },
   },
   {
     control: "TextField2",
     name: "contact",
     type: "text",
     label: "Contact No",
-    size: { sm: 6, md: 4 },
+    size: { sm: 12, md: 12, lg: 6 },
+  },
+  {
+    control: "TextField2",
+    name: "address",
+    type: "text",
+    label: "Address",
+    size: { sm: 12, md: 12, lg: 6 },
+  },
+  {
+    control: "TextField2",
+    name: "website",
+    type: "text",
+    label: "website",
+    size: { sm: 12, md: 12, lg: 6 },
+  },
+  {
+    control: "TextField2",
+    name: "linkedin",
+    type: "text",
+    label: "Linkedin URL",
+    size: { sm: 12, md: 12, lg: 6 },
   },
 ];
 const initialVal = {
   name: "",
-  email: "",
-  password: "",
-  age: "",
+  bio: "",
+  dob: "",
+  gender: [],
   contact: "",
+  address: "",
+  website: "",
+  linkedin: "",
   image: "",
-  imageType: "",
-  imageSize: "",
 };
 
 const typeValidation = [
-  { name: "password", type: "password" },
   { name: "name", type: "name" },
-  { name: "email", type: "email" },
-  { name: "age", type: "age" },
+  { name: "bio", type: "textareaField" },
+  { name: "dob", type: "dob" },
   { name: "image", type: "age" },
   { name: "contact", type: "phoneNumber" },
 ];
@@ -116,12 +138,7 @@ const UserProfile = () => {
   const user = getUserDetails();
   let { setAlert } = useContext(General);
   const callBackData = (response, type) => {
-    console.log(
-      "callBackData ~-------- data: >>",
-      type,
-      "--->",
-      response?.data
-    );
+    console.log("callBackData ~-------- data: >>", response?.data);
     if (type) setUserData(response?.data);
   };
 
@@ -143,7 +160,7 @@ const UserProfile = () => {
   };
 
   return (
-    <Grid container>
+    <>
       <Paper sx={{ width: "95%", margin: "auto", p: 2 }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -152,7 +169,13 @@ const UserProfile = () => {
               justifyContent={"space-between"}
               direction={"row"}
               alignItems={"center"}>
-              <Grid item sx={{ border: "7px solid gray", borderRadius: "50%" }}>
+              <Grid
+                item
+                sx={{
+                  border: "7px solid gray",
+                  borderRadius: "50%",
+                  ml: "20px",
+                }}>
                 <div
                   style={{
                     width: "120px",
@@ -175,7 +198,13 @@ const UserProfile = () => {
                   alignItems={"center"}
                   spacing={1}>
                   <Grid item>
-                    <Button variant="contained"> Follow</Button>
+                    {userData?.isAdmin ? (
+                      <Button variant="contained" onClick={() => setOpen(true)}>
+                        Update profile
+                      </Button>
+                    ) : (
+                      <Button variant="contained"> Follow</Button>
+                    )}
                   </Grid>
                   <Grid item>
                     <IconButton sx={{ p: 0 }}>
@@ -245,7 +274,6 @@ const UserProfile = () => {
           <Box
             sx={{
               flexGrow: 1,
-              // bgcolor: "background.paper",
               bgcolor: "#eee",
               display: "flex",
             }}>
@@ -261,6 +289,8 @@ const UserProfile = () => {
                 borderRight: 1,
                 borderColor: "divider",
                 minWidth: "200px",
+                height: "70vh",
+                overflow: "auto",
               }}>
               <Tab
                 icon={<ArticleIcon sx={{ fontSize: "20px" }} />}
@@ -314,26 +344,26 @@ const UserProfile = () => {
           </Box>
         </Grid>
       </Paper>
-      <Grid item>
-        <PopupWrapper
-          open={open}
-          handleClose={handleClose}
-          maxWidth={"sm"}
-          title="User profile">
-          <MyForm
-            fieldsArray={FormFieldArray}
-            onSubmitFun={handleSubmit}
-            cancelBtn="cancel"
-            SubmitBtn="edit"
-            formSize="sm"
-            SpecialBtn={true}
-            handleCancel={handleClose}
-            initialVal={initialVal}
-            typeValidation={typeValidation}
-          />
-        </PopupWrapper>
-      </Grid>
-    </Grid>
+      <PopupWrapper
+        open={open}
+        handleClose={handleClose}
+        maxWidth={"sm"}
+        title="User profile"
+        sx={{ display: "flex", justifyContent: "center" }}>
+        <MyForm
+          fieldsArray={FormFieldArray}
+          onSubmitFun={handleSubmit}
+          cancelBtn="cancel"
+          SubmitBtn="edit"
+          formSize="md"
+          // SpecialBtn={true}
+          borderAndShadow={true}
+          handleCancel={handleClose}
+          initialVal={initialVal}
+          typeValidation={typeValidation}
+        />
+      </PopupWrapper>
+    </>
   );
 };
 
@@ -349,7 +379,16 @@ function TabPanel(props) {
       id={`vertical-tabpanel-${index}`}
       aria-labelledby={`vertical-tab-${index}`}
       {...other}>
-      {value === index && <Box sx={{ p: 1 }}>{children}</Box>}
+      {value === index && (
+        <Box
+          sx={{
+            p: 1,
+            maxHeight: "70vh",
+            overflow: "auto",
+          }}>
+          {children}
+        </Box>
+      )}
     </div>
   );
 }

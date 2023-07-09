@@ -5,6 +5,8 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
+  IconButton,
+  InputAdornment,
   Paper,
   Radio,
 } from "@mui/material";
@@ -19,7 +21,10 @@ import {
 import { Formik, Form, Field, FastField } from "formik";
 import { TextField as MuiTextField } from "@mui/material";
 import validator from "./Validation";
-
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useState } from "react";
 export default function MyForm({
   fieldsArray = [],
   initialVal = {},
@@ -31,64 +36,33 @@ export default function MyForm({
   SubmitBtn = "",
   formSize = "sm",
   SpecialBtn = false,
+  borderAndShadow = false,
 }) {
+  const [showPass, setShowPass] = useState(false);
+
   let width = "600px";
-  switch ([formSize]) {
+  switch (formSize) {
+    case "xs":
+      width = true;
+      break;
     case "sm":
-      width = "600px";
+      width = "550px";
+      break;
     case "md":
-      width = "900px";
+      width = "850px";
+      break;
     case "lg":
-      width = "1200px";
+      width = "1150px";
+      break;
   }
-  // const validationSchema = Yup.object().shape(
-  //   );
-  // let validationSchema = validator();
 
-  // const validationSchema = Yup.object().shape({
-  //   email: Yup.string()
-  //     .email('Invalid email format')
-  //     .required('Email is required'),
-  //   password: Yup.string()
-  //     .required('Password is required')
-  //     .min(8, 'Password must be at least 8 characters')
-  //     .matches(
-  //       /^(?=.*[A-Z])/,
-  //       'Password must contain at least one uppercase letter'
-  //     ),
-  //   name: Yup.string().required('Name is required'),
-  //   selectOption: Yup.string().required('Please select an option'),
-  //   radioButton: Yup.string().required('Please select one option'),
-  //   checkbox: Yup.array().min(1, 'Please select at least one option'),
-  //   phoneNumber: Yup.string()
-  //     .required('Phone number is required')
-  //     .matches(
-  //       /^[0-9]{10}$/,
-  //       'Phone number must be a 10-digit number without any special characters'
-  //     ),
-  //   address: Yup.string()
-  //     .required('Address is required')
-  //     .matches(
-  //       /^[a-zA-Z0-9 .,-]+$/,
-  //       'Address can only contain alphanumeric characters, spaces, periods, commas, and hyphens'
-  //     ),
-  //   postalCode: Yup.string()
-  //     .required('Postal code is required')
-  //     .matches(/^[0-9]{6}$/, 'Postal code must be a 6-digit number'),
-  //   dateOfBirth: Yup.date().required('Date of birth is required'),
-  //   termsAndConditions: Yup.boolean().oneOf(
-  //     [true],
-  //     'Please accept the terms and conditions'
-  //   ),
-  //   additionalText: Yup.string()
-  //     .required('Additional text is required')
-  //     .max(125, 'Additional text cannot exceed 125 characters')
-  //     .matches(
-  //       /^[a-zA-Z0-9]+$/,
-  //       'Additional text can only contain alphanumeric characters'
-  //     ),
-  // });
+  const handleClickShowPassword = () => {
+    setShowPass((prev) => !prev);
+  };
 
+  const handleMouseDownPassword = () => {
+    setShowPass(false);
+  };
   return (
     <Formik
       initialValues={initialVal ?? {}}
@@ -97,6 +71,7 @@ export default function MyForm({
       {({ submitForm, isSubmitting, errors, touched }) => (
         <Form>
           <Paper
+            id="---------paper-------"
             sx={
               SpecialBtn
                 ? {
@@ -108,12 +83,13 @@ export default function MyForm({
                 : {
                     maxWidth: width,
                     margin: "auto",
-                    p: 2,
+                    boxShadow: borderAndShadow ? "none" : "",
+                    p: borderAndShadow ? "0" : 2,
                   }
             }>
-            <Grid container justifyContent="center" spacing={2}>
+            <Grid container sx={{ width: "100%" }}>
               {title && (
-                <Grid item xs={12} container>
+                <Grid item xs={12} container justifyContent={"center"}>
                   <Grid
                     item
                     xs={12}
@@ -135,43 +111,92 @@ export default function MyForm({
                 <Grid
                   container
                   spacing={2}
-                  sx={{ width: "100%" }}
-                  justifyContent={"center"}>
+                  sx={{
+                    maxWidth: "100%",
+                    // width: `calc(${width} - 50px)`,
+                  }}
+
+                  // justifyContent={"center"}
+                >
                   {fieldsArray?.map((item, index) => {
-                    let xs = 12;
+                    // let xs = 12;
                     return (() => {
+                      const {
+                        xs = 12,
+                        sm = 12,
+                        md = 12,
+                        lg = 6,
+                      } = item.size ?? {};
                       switch (item.control) {
                         case "TextField":
                           return (
-                            <Grid item key={item.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <Field
                                 {...item}
                                 sx={{ width: "100%" }}
                                 component={TextField}
                                 name={item.name}
-                                type={item.type}
+                                // type={item.type}
+                                type={showPass ? "text" : item?.type}
                                 label={item.label}
                                 size="small"
+                                InputProps={
+                                  item.type === "password" && {
+                                    endAdornment: (
+                                      <InputAdornment position="end">
+                                        <IconButton
+                                          aria-label="toggle password visibility"
+                                          onClick={handleClickShowPassword}
+                                          onMouseDown={handleMouseDownPassword}
+                                          edge="end">
+                                          {showPass ? (
+                                            <VisibilityOffIcon />
+                                          ) : (
+                                            <VisibilityIcon />
+                                          )}
+                                        </IconButton>
+                                      </InputAdornment>
+                                    ),
+                                  }
+                                }
                               />
                             </Grid>
                           );
                         case "TextField2":
                           return (
-                            <Grid item key={item.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <FastField
                                 {...item}
                                 sx={{ width: "100%" }}
                                 component={TextField}
-                                name={item.name}
-                                type={item.type}
-                                label={item.label}
+                                name={item?.name}
+                                type={showPass ? "text" : item?.type}
+                                label={item?.label}
                                 size="small"
                               />
                             </Grid>
                           );
                         case "checkbox":
                           return (
-                            <Grid item key={item?.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <FastField
                                 {...item}
                                 component={CheckboxWithLabel}
@@ -183,7 +208,13 @@ export default function MyForm({
                           );
                         case "inputBase":
                           return (
-                            <Grid item key={item?.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <FastField
                                 {...item}
                                 component={InputBase}
@@ -193,7 +224,13 @@ export default function MyForm({
                           );
                         case "switch":
                           return (
-                            <Grid item key={item?.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <Field
                                 {...item}
                                 component={Switch}
@@ -204,7 +241,13 @@ export default function MyForm({
                           );
                         case "radioGroup":
                           return (
-                            <Grid item key={item?.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <FormLabel id="demo-radio-buttons-group-label">
                                 {item?.label}
                               </FormLabel>
@@ -229,7 +272,13 @@ export default function MyForm({
                           );
                         case "autocomplete":
                           return (
-                            <Grid item key={item?.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <Field
                                 {...item}
                                 name={item?.name}
@@ -239,7 +288,7 @@ export default function MyForm({
                                 placeholder={item?.placeholder || ""}
                                 // helperText={item?.helperText ?? ""}
                                 size="small"
-                                style={{ minWidth: 300, maxWidth: "100%" }}
+                                style={{ minWidth: 120, maxWidth: "100%" }}
                                 renderInput={(params) => (
                                   <MuiTextField
                                     {...params}

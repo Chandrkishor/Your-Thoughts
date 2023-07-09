@@ -141,10 +141,11 @@ export default function Navbar() {
         vertical: "top",
         horizontal: "right",
       }}
+      sx={{ mr: 2 }}
       open={isMenuOpen}
       onClose={handleMenuClose}>
       <MenuItem onClick={() => handleRoute("profile")}>Profile</MenuItem>
-      <MenuItem onClick={() => handleRoute("myaccount")}>My account</MenuItem>
+      {/* <MenuItem onClick={() => handleRoute("myaccount")}>My account</MenuItem> */}
       <MenuItem onClick={handleLogout}>
         <LogoutIcon sx={{ color: "#ff6161" }} />
         <span style={{ marginLeft: 5 }}>Log out</span>

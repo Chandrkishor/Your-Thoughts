@@ -8,7 +8,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Divider from "@mui/material/Divider";
-import { Fragment } from "react";
 import { useMediaQuery } from "@mui/material";
 
 export default function PopupWrapper({
@@ -17,43 +16,42 @@ export default function PopupWrapper({
   maxWidth = "md",
   title = "",
   children,
+  ...props
 }) {
-  const fullScreen = useMediaQuery("max-width: 600px");
-  console.log("fullScreen: >>", fullScreen);
+  const fullScreen = useMediaQuery("(max-width: 700px)"); // Replace with your desired media query
 
   return (
-    <Fragment>
-      <Dialog
-        fullWidth={fullScreen}
-        // maxWidth={maxWidth ?? "md"}
-        open={open}
-        onClose={handleClose}>
-        <DialogTitle
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "8px 20px",
-          }}>
-          {title}
-          <IconButton aria-label="Close" onClick={handleClose} color="error">
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <Divider />
-        <DialogContent
-          sx={{
-            padding: -1,
-          }}>
-          {/* <DialogContentText>
+    <Dialog
+      fullWidth={fullScreen}
+      fullScreen={fullScreen}
+      maxWidth={maxWidth}
+      open={open}
+      onClose={handleClose}>
+      <DialogTitle
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "8px 20px",
+        }}>
+        {title}
+        <IconButton aria-label="Close" onClick={handleClose} color="error">
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <Divider />
+      <DialogContent
+        sx={{
+          padding: -1,
+        }}>
+        {/* <DialogContentText>
             You can set my maximum width and whether to adapt or not.
           </DialogContentText> */}
-          {children}
-        </DialogContent>
-        {/* <DialogActions>
+        {children}
+      </DialogContent>
+      {/* <DialogActions>
           <Button onClick={handleClose}>Close</Button>
         </DialogActions> */}
-      </Dialog>
-    </Fragment>
+    </Dialog>
   );
 }
