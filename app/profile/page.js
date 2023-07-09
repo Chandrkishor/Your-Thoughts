@@ -96,17 +96,6 @@ const FormFieldArray = [
     size: { sm: 12, md: 12, lg: 6 },
   },
 ];
-const initialVal = {
-  name: "",
-  bio: "",
-  dob: "",
-  gender: [],
-  contact: "",
-  address: "",
-  website: "",
-  linkedin: "",
-  image: "",
-};
 
 const typeValidation = [
   { name: "name", type: "name" },
@@ -134,7 +123,17 @@ const UserProfile = () => {
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({});
   const [value, setValue] = useState(0);
-
+  const [initialVal, setInitialVal] = useState({
+    name: "",
+    bio: "",
+    dob: "",
+    gender: [],
+    contact: "",
+    address: "",
+    website: "",
+    linkedin: "",
+    image: "",
+  });
   const user = getUserDetails();
   let { setAlert } = useContext(General);
   const callBackData = (response, type) => {
@@ -146,6 +145,24 @@ const UserProfile = () => {
   useEffect(() => {
     if (user?._id) get(`userDetails/${user?._id}`, callBackData);
   }, []);
+
+  console.log("UserProfile ~-------- userData: >>", userData);
+  useEffect(() => {
+    if (Object.keys(userData ?? {}).length) {
+      const { name, bio, dob, gender, contact, address, website, linkedin } =
+        userData;
+      setInitialVal({
+        name: name,
+        bio: bio ?? "",
+        dob: dob ?? "",
+        gender: [gender] ?? [],
+        contact: contact ?? "",
+        address: address ?? "",
+        website: website ?? "",
+        linkedin: linkedin ?? "",
+      });
+    }
+  }, [userData]);
 
   const handleSubmit = (data) => {
     console.log("handleSubmit: >>", data);
@@ -347,14 +364,14 @@ const UserProfile = () => {
       <PopupWrapper
         open={open}
         handleClose={handleClose}
-        maxWidth={"sm"}
-        title="User profile"
+        maxWidth={"md"}
+        title={"Update Profile For : " + userData.email}
         sx={{ display: "flex", justifyContent: "center" }}>
         <MyForm
           fieldsArray={FormFieldArray}
           onSubmitFun={handleSubmit}
           cancelBtn="cancel"
-          SubmitBtn="edit"
+          SubmitBtn="Update"
           formSize="md"
           // SpecialBtn={true}
           borderAndShadow={true}
