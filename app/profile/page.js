@@ -65,12 +65,12 @@ const FormFieldArray = [
       { _id: "female", label: "Female" },
       { _id: "other", label: "Other" },
     ],
-    size: { sm: 12, md: 12, lg: 6 },
+    // size: { sm: 12, md: 12, lg: 6 },
   },
   {
     control: "TextField2",
     name: "contact",
-    type: "text",
+    type: "number",
     label: "Contact No",
     size: { sm: 12, md: 12, lg: 6 },
   },
@@ -99,10 +99,9 @@ const FormFieldArray = [
 
 const typeValidation = [
   { name: "name", type: "name" },
-  { name: "bio", type: "textareaField" },
+  // { name: "bio", type: "textareaField" },
   { name: "dob", type: "dob" },
-  { name: "image", type: "age" },
-  { name: "contact", type: "phoneNumber" },
+  // { name: "contact", type: "phoneNumber" },
 ];
 const spanStyle = {
   display: "flex",
@@ -118,7 +117,7 @@ const spanStyle = {
 };
 
 const UserProfile = () => {
-  const { get } = useAPI();
+  const { get, put } = useAPI();
   // const router = useRouter();
   const [open, setOpen] = useState(false);
   const [userData, setUserData] = useState({});
@@ -146,16 +145,17 @@ const UserProfile = () => {
     if (user?._id) get(`userDetails/${user?._id}`, callBackData);
   }, []);
 
-  console.log("UserProfile ~-------- userData: >>", userData);
   useEffect(() => {
     if (Object.keys(userData ?? {}).length) {
       const { name, bio, dob, gender, contact, address, website, linkedin } =
         userData;
+      console.log("useEffect ~-------- gender: >>", gender);
+
       setInitialVal({
         name: name,
         bio: bio ?? "",
         dob: dob ?? "",
-        gender: [gender] ?? [],
+        gender: gender ?? null,
         contact: contact ?? "",
         address: address ?? "",
         website: website ?? "",
@@ -163,11 +163,39 @@ const UserProfile = () => {
       });
     }
   }, [userData]);
+  const handleUpdate = (response, resType) => {
+    if (!resType) {
+      setAlert(() => ({
+        open: true,
+        message: response?.data?.message || "",
+        severity: "error",
+      }));
+      return;
+    }
+
+    let user = response.data?.user;
+    user && setItemSession("userDetails", user);
+    setAlert(() => ({
+      open: true,
+      message: "Data Updated successfully",
+      severity: "success",
+    }));
+    setOpen(false);
+  };
 
   const handleSubmit = (data) => {
-    console.log("handleSubmit: >>", data);
-    // post("register", data, handleResponse);
+    const { dob, ...rest } = data;
+    let val = data;
+    let formattedDate = null;
+    if (dob) {
+      const date = new Date(dob);
+      formattedDate = date.toLocaleDateString(date);
+      val = { ...rest, dob: formattedDate };
+    }
+    console.log("handleSubmit ~-------- val: >>", val);
+    put(`userDetails/${user?._id}`, val, handleUpdate);
   };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };

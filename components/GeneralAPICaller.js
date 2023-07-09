@@ -19,12 +19,12 @@ const useAPI = () => {
         setData(response?.data ?? {});
         callBackData(response, true);
       })
-      .catch((err) => {
-        console.log("err", err);
-        callBackData(err, false);
+      .catch(({ response }) => {
+        console.log("response", response);
+        callBackData(response, false);
         setAlert({
-          message: err.message,
-          type: "error",
+          message: response.data.message ?? "Something went wrong",
+          severity: "error",
           open: true,
         });
       })
@@ -46,7 +46,7 @@ const useAPI = () => {
       .catch((response) => {
         setAlert({
           message: response?.data?.message ?? "Something went wrong",
-          type: "error",
+          severity: "error",
           open: true,
         });
         callBackFun(err, false);
@@ -56,21 +56,21 @@ const useAPI = () => {
       });
   }, []);
   //* PUT API
-  const put = useCallback((pUrl, body) => {
+  const put = useCallback((pUrl, body, callBackFun = () => {}) => {
     setIsLoading(true);
     axios
-      .patch(`http://localhost:5000/api/v1/${pUrl}`, body, {
+      .patch(`${API_BASEURL}${API_BASENAME}${API_BASEPATH}${pUrl}`, body, {
         withCredentials: true, // Include cookies in the request
       })
-      .then(() => {
-        setData(data);
-        callBackFun(data, true);
+      .then((response) => {
+        setData(response.data);
+        callBackFun(response, true);
       })
       .catch(({ response }) => {
         callBackFun(response, false);
         setAlert({
-          message: response?.data?.message ?? "",
-          type: "error",
+          message: response?.data?.message ?? "Something went wrong",
+          severity: "error",
           open: true,
         });
       })

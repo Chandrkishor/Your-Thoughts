@@ -68,7 +68,7 @@ export default function MyForm({
       initialValues={initialVal ?? {}}
       validationSchema={validator(typeValidation)}
       onSubmit={onSubmitFun}>
-      {({ submitForm, isSubmitting, errors, touched }) => (
+      {({ isSubmitting, errors, touched }) => (
         <Form>
           <Paper
             id="---------paper-------"
@@ -120,19 +120,15 @@ export default function MyForm({
                 >
                   {fieldsArray?.map((item, index) => {
                     // let xs = 12;
+                    const { size, ...rest } = item ?? {};
+                    const { xs = 12, sm = 12, md = 12, lg = 6 } = size ?? {};
                     return (() => {
-                      const {
-                        xs = 12,
-                        sm = 12,
-                        md = 12,
-                        lg = 6,
-                      } = item.size ?? {};
-                      switch (item.control) {
+                      switch (rest.control) {
                         case "TextField":
                           return (
                             <Grid
                               item
-                              key={item.name + index}
+                              key={rest?.name + index}
                               xs={xs}
                               sm={sm}
                               md={md}
@@ -141,13 +137,13 @@ export default function MyForm({
                                 {...item}
                                 sx={{ width: "100%" }}
                                 component={TextField}
-                                name={item.name}
-                                // type={item.type}
+                                name={rest?.name}
+                                // type={rest?.type}
                                 type={showPass ? "text" : item?.type}
-                                label={item.label}
+                                label={rest?.label}
                                 size="small"
                                 InputProps={
-                                  item.type === "password" && {
+                                  rest?.type === "password" && {
                                     endAdornment: (
                                       <InputAdornment position="end">
                                         <IconButton
@@ -172,7 +168,7 @@ export default function MyForm({
                           return (
                             <Grid
                               item
-                              key={item.name + index}
+                              key={rest?.name + index}
                               xs={xs}
                               sm={sm}
                               md={md}
@@ -262,9 +258,13 @@ export default function MyForm({
                                     {...option}
                                     key={`${option?._id}-${index}`}
                                     value={option?._id ?? false}
-                                    control={<Radio disabled={isSubmitting} />}
+                                    control={
+                                      <Radio
+                                      // disabled={isSubmitting}
+                                      />
+                                    }
                                     label={option?.label ?? ""}
-                                    disabled={isSubmitting}
+                                    // disabled={isSubmitting}
                                   />
                                 ))}
                               </FastField>
@@ -308,14 +308,14 @@ export default function MyForm({
                           );
                         case "button":
                           return (
-                            <Grid key={item.label + index} item>
+                            <Grid key={rest?.label + index} item>
                               <Button
-                                {...item}
+                                // {...item}
                                 sx={{ width: "100%" }}
-                                variant={item.variant || "contained"}
-                                type={item.type || "button"}
-                                onClick={item.onClick}>
-                                {item.label}
+                                variant={rest?.variant || "contained"}
+                                type={rest?.type || "button"}
+                                onClick={rest?.onClick}>
+                                {rest?.label}
                               </Button>
                             </Grid>
                           );
@@ -328,19 +328,19 @@ export default function MyForm({
                       spacing={2}
                       justifyContent={SpecialBtn ? "" : "flex-end"}
                       flexDirection={SpecialBtn ? "column-reverse" : "row"}>
-                      <Grid item sx={SpecialBtn && { width: "100%" }}>
+                      <Grid item sx={SpecialBtn ? { width: "100%" } : {}}>
                         <Button
                           type="button"
                           variant="outlined"
-                          sx={SpecialBtn && { width: "100%" }}
+                          sx={SpecialBtn ? { width: "100%" } : {}}
                           onClick={handleCancel}>
                           {cancelBtn}
                         </Button>
                       </Grid>
-                      <Grid item sx={SpecialBtn && { width: "100%" }}>
+                      <Grid item sx={SpecialBtn ? { width: "100%" } : {}}>
                         <Button
                           type="submit"
-                          sx={SpecialBtn && { width: "100%" }}
+                          sx={SpecialBtn ? { width: "100%" } : {}}
                           variant="contained">
                           {SubmitBtn}
                         </Button>

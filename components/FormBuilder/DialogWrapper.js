@@ -16,7 +16,7 @@ export default function PopupWrapper({
   maxWidth = "md",
   title = "",
   children,
-  ...props
+  // ...props
 }) {
   const fullScreen = useMediaQuery("(max-width: 700px)"); // Replace with your desired media query
 
