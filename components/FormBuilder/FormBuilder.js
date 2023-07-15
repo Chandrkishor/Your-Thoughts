@@ -5,6 +5,8 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
+  IconButton,
+  InputAdornment,
   Paper,
   Radio,
 } from "@mui/material";
@@ -18,12 +20,15 @@ import {
 } from "formik-mui";
 import { Formik, Form, Field, FastField } from "formik";
 import { TextField as MuiTextField } from "@mui/material";
-import * as Yup from "yup";
-import React, { useEffect, useState } from "react";
-
+import validator from "./Validation";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useState } from "react";
 export default function MyForm({
   fieldsArray = [],
   initialVal = {},
+  typeValidation = [],
   onSubmitFun = () => {},
   title = null,
   handleCancel = () => {},
@@ -31,39 +36,42 @@ export default function MyForm({
   SubmitBtn = "",
   formSize = "sm",
   SpecialBtn = false,
+  borderAndShadow = false,
 }) {
-  // const [initialValue, setInitialValues] = useState({});
+  const [showPass, setShowPass] = useState(false);
+
   let width = "600px";
-  switch ([formSize]) {
+  switch (formSize) {
+    case "xs":
+      width = true;
+      break;
     case "sm":
-      width = "600px";
+      width = "550px";
+      break;
     case "md":
-      width = "900px";
+      width = "850px";
+      break;
     case "lg":
-      width = "1200px";
+      width = "1150px";
+      break;
   }
 
-  const validationSchema = Yup.object().shape({
-    email: Yup.string()
-      .email("Invalid email format")
-      .required("Email is required"),
-    password: Yup.string()
-      .required("Password is required")
-      .min(4, "Password must be at least 4 characters"),
-    // name: Yup.string().required("Name is required"),
-    // selectOption: Yup.string().required("Please select an option"),
-    // radioButton: Yup.string().required("Please select one option"),
-    // checkbox: Yup.array().min(1, "Please select at least one option"),
-  });
+  const handleClickShowPassword = () => {
+    setShowPass((prev) => !prev);
+  };
 
+  const handleMouseDownPassword = () => {
+    setShowPass(false);
+  };
   return (
     <Formik
       initialValues={initialVal ?? {}}
-      validationSchema={validationSchema}
+      validationSchema={validator(typeValidation)}
       onSubmit={onSubmitFun}>
-      {({ submitForm, isSubmitting, errors, touched }) => (
+      {({ isSubmitting, errors, touched }) => (
         <Form>
           <Paper
+            id="---------paper-------"
             sx={
               SpecialBtn
                 ? {
@@ -75,12 +83,13 @@ export default function MyForm({
                 : {
                     maxWidth: width,
                     margin: "auto",
-                    p: 2,
+                    boxShadow: borderAndShadow ? "none" : "",
+                    p: borderAndShadow ? "0" : 2,
                   }
             }>
-            <Grid container justifyContent="center" spacing={2}>
+            <Grid container sx={{ width: "100%" }}>
               {title && (
-                <Grid item xs={12} container>
+                <Grid item xs={12} container justifyContent={"center"}>
                   <Grid
                     item
                     xs={12}
@@ -102,43 +111,88 @@ export default function MyForm({
                 <Grid
                   container
                   spacing={2}
-                  sx={{ width: "100%" }}
-                  justifyContent={"center"}>
+                  sx={{
+                    maxWidth: "100%",
+                    // width: `calc(${width} - 50px)`,
+                  }}
+
+                  // justifyContent={"center"}
+                >
                   {fieldsArray?.map((item, index) => {
-                    let xs = 12;
+                    // let xs = 12;
+                    const { size, ...rest } = item ?? {};
+                    const { xs = 12, sm = 12, md = 12, lg = 6 } = size ?? {};
                     return (() => {
-                      switch (item.control) {
+                      switch (rest.control) {
                         case "TextField":
                           return (
-                            <Grid item key={item.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={rest?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <Field
                                 {...item}
                                 sx={{ width: "100%" }}
                                 component={TextField}
-                                name={item.name}
-                                type={item.type}
-                                label={item.label}
+                                name={rest?.name}
+                                // type={rest?.type}
+                                type={showPass ? "text" : item?.type}
+                                label={rest?.label}
                                 size="small"
+                                InputProps={
+                                  rest?.type === "password" && {
+                                    endAdornment: (
+                                      <InputAdornment position="end">
+                                        <IconButton
+                                          aria-label="toggle password visibility"
+                                          onClick={handleClickShowPassword}
+                                          onMouseDown={handleMouseDownPassword}
+                                          edge="end">
+                                          {showPass ? (
+                                            <VisibilityOffIcon />
+                                          ) : (
+                                            <VisibilityIcon />
+                                          )}
+                                        </IconButton>
+                                      </InputAdornment>
+                                    ),
+                                  }
+                                }
                               />
                             </Grid>
                           );
                         case "TextField2":
                           return (
-                            <Grid item key={item.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={rest?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <FastField
                                 {...item}
                                 sx={{ width: "100%" }}
                                 component={TextField}
-                                name={item.name}
-                                type={item.type}
-                                label={item.label}
+                                name={item?.name}
+                                type={showPass ? "text" : item?.type}
+                                label={item?.label}
                                 size="small"
                               />
                             </Grid>
                           );
                         case "checkbox":
                           return (
-                            <Grid item key={item?.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <FastField
                                 {...item}
                                 component={CheckboxWithLabel}
@@ -150,7 +204,13 @@ export default function MyForm({
                           );
                         case "inputBase":
                           return (
-                            <Grid item key={item?.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <FastField
                                 {...item}
                                 component={InputBase}
@@ -160,7 +220,13 @@ export default function MyForm({
                           );
                         case "switch":
                           return (
-                            <Grid item key={item?.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <Field
                                 {...item}
                                 component={Switch}
@@ -171,7 +237,13 @@ export default function MyForm({
                           );
                         case "radioGroup":
                           return (
-                            <Grid item key={item?.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <FormLabel id="demo-radio-buttons-group-label">
                                 {item?.label}
                               </FormLabel>
@@ -186,9 +258,13 @@ export default function MyForm({
                                     {...option}
                                     key={`${option?._id}-${index}`}
                                     value={option?._id ?? false}
-                                    control={<Radio disabled={isSubmitting} />}
+                                    control={
+                                      <Radio
+                                      // disabled={isSubmitting}
+                                      />
+                                    }
                                     label={option?.label ?? ""}
-                                    disabled={isSubmitting}
+                                    // disabled={isSubmitting}
                                   />
                                 ))}
                               </FastField>
@@ -196,7 +272,13 @@ export default function MyForm({
                           );
                         case "autocomplete":
                           return (
-                            <Grid item key={item?.name + index} xs={xs}>
+                            <Grid
+                              item
+                              key={item?.name + index}
+                              xs={xs}
+                              sm={sm}
+                              md={md}
+                              lg={lg}>
                               <Field
                                 {...item}
                                 name={item?.name}
@@ -206,7 +288,7 @@ export default function MyForm({
                                 placeholder={item?.placeholder || ""}
                                 // helperText={item?.helperText ?? ""}
                                 size="small"
-                                style={{ minWidth: 300, maxWidth: "100%" }}
+                                style={{ minWidth: 120, maxWidth: "100%" }}
                                 renderInput={(params) => (
                                   <MuiTextField
                                     {...params}
@@ -226,14 +308,14 @@ export default function MyForm({
                           );
                         case "button":
                           return (
-                            <Grid key={item.label + index} item>
+                            <Grid key={rest?.label + index} item>
                               <Button
-                                {...item}
+                                // {...item}
                                 sx={{ width: "100%" }}
-                                variant={item.variant || "contained"}
-                                type={item.type || "button"}
-                                onClick={item.onClick}>
-                                {item.label}
+                                variant={rest?.variant || "contained"}
+                                type={rest?.type || "button"}
+                                onClick={rest?.onClick}>
+                                {rest?.label}
                               </Button>
                             </Grid>
                           );
@@ -246,19 +328,19 @@ export default function MyForm({
                       spacing={2}
                       justifyContent={SpecialBtn ? "" : "flex-end"}
                       flexDirection={SpecialBtn ? "column-reverse" : "row"}>
-                      <Grid item sx={SpecialBtn && { width: "100%" }}>
+                      <Grid item sx={SpecialBtn ? { width: "100%" } : {}}>
                         <Button
                           type="button"
                           variant="outlined"
-                          sx={SpecialBtn && { width: "100%" }}
+                          sx={SpecialBtn ? { width: "100%" } : {}}
                           onClick={handleCancel}>
                           {cancelBtn}
                         </Button>
                       </Grid>
-                      <Grid item sx={SpecialBtn && { width: "100%" }}>
+                      <Grid item sx={SpecialBtn ? { width: "100%" } : {}}>
                         <Button
                           type="submit"
-                          sx={SpecialBtn && { width: "100%" }}
+                          sx={SpecialBtn ? { width: "100%" } : {}}
                           variant="contained">
                           {SubmitBtn}
                         </Button>

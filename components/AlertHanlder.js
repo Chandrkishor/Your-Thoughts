@@ -27,7 +27,6 @@ const StyledSnackbar = styled(Snackbar)(({ theme, severity }) => ({
 
 const SetAlertComponent = () => {
   let { alert, setAlert } = useContext(General);
-  console.log("SetAlertComponent ~-------- alert: >>", alert);
 
   const handleClose = () => {
     setAlert((prev) => ({

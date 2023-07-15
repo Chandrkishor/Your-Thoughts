@@ -1,0 +1,36 @@
+{
+  "myPosts": [
+    {
+      "img": "https://example.com/image1.jpg",
+      "title": "HTML Working for Nub's",
+      "subheader": "08 July 2023",
+      "description": "HTML basic working for Nub's, explained very well here. In this comprehensive guide, you will learn the ins and outs of HTML, including tags, elements, and semantic markup. Dive into the world of web development with HTML!",
+      "likes": "25",
+      "dislikes": "2"
+    },
+    {
+      "img": "https://example.com/image2.jpg",
+      "title": "CSS Styling Tips",
+      "subheader": "10 July 2023",
+      "description": "Unlock the power of CSS with these essential styling tips and techniques. From flexbox to grid layouts, this guide covers it all. Elevate your web designs to the next level with CSS magic!",
+      "likes": "18",
+      "dislikes": "4"
+    },
+    {
+      "img": "https://example.com/image3.jpg",
+      "title": "JavaScript Basics",
+      "subheader": "15 July 2023",
+      "description": "Discover the fundamentals of JavaScript and embark on an exciting journey of coding. From variables to functions, loops to conditionals, this beginner-friendly guide has got you covered. Get ready to unleash the power of JavaScript!",
+      "likes": "32",
+      "dislikes": "1"
+    },
+    {
+      "img": "https://example.com/image4.jpg",
+      "title": "React Components Deep Dive",
+      "subheader": "20 July 2023",
+      "description": "Take a deep dive into React components and explore advanced concepts and techniques. Learn how to build reusable UI components, manage state effectively, and optimize performance. Level up your React skills and become a component master!",
+      "likes": "40",
+      "dislikes": "7"
+    }
+  ]
+}

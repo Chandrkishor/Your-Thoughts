@@ -13,29 +13,29 @@ const FormFieldArray = [
     name: "name",
     type: "text",
     label: "Full Name",
-    size: { sm: 6, md: 4 },
+    size: { sm: 12, md: 12, lg: 12 },
   },
   {
     control: "TextField2",
     name: "email",
     type: "text",
     label: "Email",
-    size: { sm: 3, md: 2 },
+    size: { sm: 12, md: 12, lg: 12 },
   },
   {
-    control: "TextField2",
+    control: "TextField",
     name: "password",
     type: "password",
     label: "Password",
-    size: { sm: 6, md: 4 },
+    size: { sm: 12, md: 12, lg: 12 },
   },
 
   {
     control: "TextField2",
-    name: "age",
-    type: "number",
-    label: "Age",
-    size: { sm: 6, md: 4 },
+    name: "dob",
+    type: "date",
+    label: "DOB",
+    size: { sm: 12, md: 12, lg: 12 },
   },
   // {
   //   control: "checkbox",
@@ -48,23 +48,7 @@ const FormFieldArray = [
   //   label: "My switch",
   // },
   // {
-  //   control: "autocomplete",
-  //   name: "gender",
-  //   label: "Gender",
-  //   options: [
-  //     { _id: "male", label: "Male" },
-  //     { _id: "female", label: "Female" },
-  //     { _id: "other", label: "Other" },
-  //   ],
-  //   // OptionUrl: "http://localhost:3000/api/v1/autocompleteOptions",
-  // },
   // {
-  //   control: "TextField2",
-  //   name: "contact",
-  //   type: "text",
-  //   label: "Contact No",
-  //   size: { sm: 6, md: 4 },
-  // },
   // {
   //   control: "radioGroup",
   //   name: "radioGroup",
@@ -81,8 +65,15 @@ const initialVal = {
   name: "",
   email: "",
   password: "",
-  age: "",
+  dob: "",
 };
+
+const typeValidation = [
+  { name: "password", type: "password" },
+  { name: "name", type: "name" },
+  { name: "email", type: "email" },
+  { name: "dob", type: "dob" },
+];
 const SignUp = () => {
   const { post } = useAPI();
   const router = useRouter();
@@ -131,6 +122,7 @@ const SignUp = () => {
           SpecialBtn={true}
           handleCancel={handleLogin}
           initialVal={initialVal}
+          typeValidation={typeValidation}
         />
         <Grid container sx={{ mt: 1 }}>
           <Button

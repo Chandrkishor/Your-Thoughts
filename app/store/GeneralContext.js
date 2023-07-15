@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useEffect, useState } from "react";
+import { getUserDetails } from "../utils/AppUtils";
 
 export const General = createContext();
 
@@ -14,8 +15,7 @@ function GeneralContext({ children }) {
     vertical: "top",
     horizontal: "right",
   });
-  let userDetails = sessionStorage.getItem("userDetails");
-  userDetails = JSON.parse(userDetails);
+  let userDetails = getUserDetails();
 
   useEffect(() => {
     // The user is logged in.
