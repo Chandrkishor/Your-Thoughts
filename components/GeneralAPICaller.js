@@ -23,7 +23,7 @@ const useAPI = () => {
         console.log("response", response);
         callBackData(response, false);
         setAlert({
-          message: response.data.message ?? "Something went wrong",
+          message: response?.data?.message ?? "Something went wrong",
           severity: "error",
           open: true,
         });

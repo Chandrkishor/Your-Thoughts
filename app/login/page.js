@@ -13,14 +13,14 @@ const FormFieldArray = [
     name: "email",
     type: "email",
     label: "Email",
-    size: { sm: 12, md: 12 },
+    size: { sm: 12, md: 12, lg: 12 },
   },
   {
     control: "TextField",
     name: "password",
     type: "password",
     label: "Password",
-    size: { sm: 12, md: 12 },
+    size: { sm: 12, md: 12, lg: 12 },
   },
 ];
 
