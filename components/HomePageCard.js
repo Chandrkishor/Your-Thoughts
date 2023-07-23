@@ -17,7 +17,16 @@ import { Box } from "@mui/material";
 
 export default function MyHomePageCard({ cardData }) {
   return (
-    <Card sx={{ minWidth: "100%", p: 1 }}>
+    <Card
+      sx={{
+        width: "100%",
+        maxWidth: "600px",
+        height: "400px",
+        p: 1,
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "column",
+      }}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe">
@@ -36,6 +45,12 @@ export default function MyHomePageCard({ cardData }) {
         }
         title={cardData?.title ?? ""}
         subheader={cardData?.subheader ?? ""}
+        // sx={{
+        //   overflow: "hidden",
+        //   textOverflow: "ellipsis",
+        //   whiteSpace: "nowrap",
+        //   // lineHeight: "1.2",
+        // }}
       />
 
       <CardMedia component="div">
@@ -43,12 +58,12 @@ export default function MyHomePageCard({ cardData }) {
           src={cardData?.img}
           alt="Picture of the user"
           loading="lazy"
-          width={200}
-          height={200}
+          width={150}
+          height={150}
           sizes="100vw"
           style={{
             width: "100%",
-            height: "300px",
+            height: "230px",
             objectFit: "cover",
           }}
         />
