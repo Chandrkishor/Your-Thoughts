@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useContext, useState } from "react";
 import { General } from "@/app/store/GeneralContext";
 import { saveCookies } from "@/app/utils/AppUtils";
+import { API_BASEPATH } from "@/app/utils/Constant";
 
 const darkTheme = createTheme({
   palette: {
@@ -276,7 +277,9 @@ export default function Navbar() {
               variant="h6"
               noWrap
               component="div"
-              sx={{ display: { xs: "none", sm: "block" } }}>
+              onClick={() => router.push(`${API_BASEPATH}`)}
+              // variant="text"
+              sx={{ display: { xs: "none", sm: "block", cursor: "pointer" } }}>
               Your Thoughts
             </Typography>
             <Search>

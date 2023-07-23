@@ -135,6 +135,7 @@ export default function MyForm({
                               lg={lg}>
                               <Field
                                 {...item}
+                                autoComplete="off"
                                 sx={{ width: "100%" }}
                                 component={TextField}
                                 name={rest?.name}
@@ -174,13 +175,21 @@ export default function MyForm({
                               md={md}
                               lg={lg}>
                               <FastField
-                                {...item}
+                                {...rest}
+                                autoComplete="off"
                                 sx={{ width: "100%" }}
                                 component={TextField}
-                                name={item?.name}
-                                type={showPass ? "text" : item?.type}
-                                label={item?.label}
+                                name={rest?.name}
+                                type={showPass ? "text" : rest?.type}
+                                label={rest?.label}
                                 size="small"
+                                InputLabelProps={
+                                  rest?.type === "date"
+                                    ? {
+                                        shrink: true,
+                                      }
+                                    : null
+                                }
                               />
                             </Grid>
                           );

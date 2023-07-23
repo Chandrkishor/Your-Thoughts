@@ -42,19 +42,23 @@ const FormFieldArray = [
     label: "Full Name",
     size: { sm: 12, md: 12, lg: 6 },
   },
-  {
-    control: "TextField2",
-    name: "bio",
-    type: "text",
-    label: "Your Bio",
-    size: { sm: 12, md: 12, lg: 6 },
-  },
+
   {
     control: "TextField2",
     name: "dob",
     type: "date",
     label: "DOB",
     size: { sm: 12, md: 12, lg: 6 },
+  },
+  {
+    control: "TextField2",
+    name: "bio",
+    type: "text",
+    label: "Your Bio",
+    multiline: true,
+    minRows: 2,
+    maxRows: 4,
+    size: { sm: 12, md: 12, lg: 12 },
   },
   {
     control: "autocomplete",
@@ -109,6 +113,7 @@ const spanStyle = {
   cursor: "pointer",
   transition: "background 0.3s",
   padding: "2px 15px 2px 0px",
+
   // "&:hover": {
   //   background: "#ddd",
   //   borderRadius: "10px",
@@ -133,10 +138,10 @@ const UserProfile = () => {
     linkedin: "",
     image: "",
   });
+  console.log("-------- initialVal-----: >>", initialVal);
   const user = getUserDetails();
   let { setAlert } = useContext(General);
   const callBackData = (response, type) => {
-    console.log("callBackData ~-------- data: >>", response?.data);
     if (type) setUserData(response?.data);
   };
 
@@ -149,12 +154,10 @@ const UserProfile = () => {
     if (Object.keys(userData ?? {}).length) {
       const { name, bio, dob, gender, contact, address, website, linkedin } =
         userData;
-      console.log("useEffect ~-------- gender: >>", gender);
-
       setInitialVal({
         name: name,
-        bio: bio ?? "",
         dob: dob ?? "",
+        bio: bio ?? "",
         gender: gender ?? null,
         contact: contact ?? "",
         address: address ?? "",
@@ -163,6 +166,7 @@ const UserProfile = () => {
       });
     }
   }, [userData]);
+
   const handleUpdate = (response, resType) => {
     if (!resType) {
       setAlert(() => ({
@@ -180,6 +184,7 @@ const UserProfile = () => {
       message: "Data Updated successfully",
       severity: "success",
     }));
+    get(`userDetails/${user?._id}`, callBackData);
     setOpen(false);
   };
 
@@ -192,7 +197,6 @@ const UserProfile = () => {
       formattedDate = date.toLocaleDateString(date);
       val = { ...rest, dob: formattedDate };
     }
-    console.log("handleSubmit ~-------- val: >>", val);
     put(`userDetails/${user?._id}`, val, handleUpdate);
   };
 
@@ -267,8 +271,7 @@ const UserProfile = () => {
             <Typography
               variant="body1"
               sx={{ padding: "4px 32px", textAlign: "center" }}>
-              {userData?.bio ??
-                "--Dummy bio--, Exploring the new tools and techniques on frontend development. Loves to meet up with new people and participate in the community. I do interesting stuff on codepen https://codepen.io/nirazanbasnet"}
+              {userData?.bio ?? "--Dummy bio--"}
             </Typography>
           </Grid>
           <Grid item xs={12}>
@@ -277,32 +280,32 @@ const UserProfile = () => {
               justifyContent={"space-around"}
               alignItems={"center"}>
               <Typography sx={spanStyle}>
-                <LocationOnIcon />
-                {user.location ?? " N/A"}
+                <LocationOnIcon sx={{ mr: 0.5 }} />
+                {userData?.address ?? " N/A"}
               </Typography>
               <Typography sx={spanStyle}>
-                <CakeIcon />
-                {user.birthday ?? "N/A"}
+                <CakeIcon sx={{ mr: 0.5 }} />
+                {userData?.dob ?? "N/A"}
               </Typography>
               <Typography sx={spanStyle}>
                 <IconButton>
-                  <EmailIcon />
+                  <EmailIcon sx={{ mr: 0.5 }} />
                 </IconButton>
-                {user?.email ?? "N/A"}
+                {userData?.email ?? "N/A"}
               </Typography>
               <Typography sx={spanStyle}>
                 <IconButton>
-                  <LaunchIcon />{" "}
+                  <LaunchIcon sx={{ mr: 0.5 }} />
                 </IconButton>
-                {user.website ?? "www.tiwari.com"}
+                {userData?.website ?? "N/A"}
               </Typography>
               <Typography sx={spanStyle}>
                 <IconButton>
-                  <LinkedInIcon />
+                  <LinkedInIcon sx={{ mr: 0.5 }} />
                 </IconButton>
-                Linkedin{" "}
+                Linkedin
                 <IconButton>
-                  <FacebookIcon />
+                  <FacebookIcon sx={{ mr: 0.5 }} />
                 </IconButton>
                 Facebook
               </Typography>
