@@ -1,81 +1,174 @@
 "use client";
-import MyHomePageCard from "@/components/HomePageCard";
-import { Grid } from "@mui/material";
-const homepageArray = [
-  {
-    title: "How to Manipulate HTML and CSS Using JavaScript",
-    subheader: "July 22, 2023",
-    img: "https://images.unsplash.com/photo-1689363302902-2c58330d6494?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    likes: 10,
-    disLike: 2,
-  },
-  {
-    title: "How to Make a Delicious Paella Dish",
-    subheader: "July 23, 2023",
-    img: "https://images.unsplash.com/photo-1687462909401-d4fb622a1e89?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    likes: 5,
-    disLike: 1,
-  },
-  {
-    title:
-      "Exploring the Beautiful Mountain SceneryMountain Scenery Mountain  ",
-    subheader: "July 24, 2023",
-    img: "https://images.unsplash.com/photo-1635898004196-7d041668e6c8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80",
-    likes: 8,
-    disLike: 0,
-  },
-  {
-    title: "How to Manipulate HTML and CSS Using JavaScript",
-    subheader: "July 22, 2023",
-    img: "https://images.unsplash.com/photo-1689363302902-2c58330d6494?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    likes: 10,
-    disLike: 2,
-  },
-  {
-    title: "How to Make a Delicious Paella Dish",
-    subheader: "July 23, 2023",
-    img: "https://images.unsplash.com/photo-1637068334885-d73f3076bd84?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1077&q=80",
-    likes: 5,
-    disLike: 1,
-  },
-  {
-    title: "Exploring the Beautiful Mountain Scenery",
-    subheader: "July 24, 2023",
-    img: "https://images.unsplash.com/photo-1689768013635-80b4d4a83693?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=435&q=80",
-    likes: 8,
-    disLike: 0,
-  },
-  {
-    title: "How to Manipulate HTML and CSS Using JavaScript",
-    subheader: "July 22, 2023",
-    img: "https://images.unsplash.com/photo-1689363302902-2c58330d6494?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    likes: 10,
-    disLike: 2,
-  },
-  {
-    title: "How to Make a Delicious Paella Dish",
-    subheader: "July 23, 2023",
-    img: "https://images.unsplash.com/photo-1640702149643-d172d1463fe4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80",
-    likes: 5,
-    disLike: 1,
-  },
-  {
-    title: "Exploring the Beautiful Mountain Scenery",
-    subheader: "July 24, 2023",
-    img: "https://images.unsplash.com/photo-1689768013635-80b4d4a83693?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=435&q=80",
-    likes: 8,
-    disLike: 0,
-  },
-];
+
+import {
+  Box,
+  Button,
+  Card,
+  Grid,
+  Paper,
+  Tab,
+  Tabs,
+  Typography,
+} from "@mui/material";
+import { useContext, useState } from "react";
+import { General } from "./store/GeneralContext";
+import MyFeed from "@/components/HomePageComponents/Myfeed";
+import WhatshotOutlinedIcon from "@mui/icons-material/WhatshotOutlined";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
+import PortraitOutlinedIcon from "@mui/icons-material/PortraitOutlined";
 
 export default function Home() {
+  let { setAlert } = useContext(General);
+  const [open, setOpen] = useState(false);
+  // const [userData, setUserData] = useState({});
+  const [value, setValue] = useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
-    <Grid container spacing={2} sx={{ p: 2 }}>
-      {homepageArray?.map((post) => (
-        <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={post?.img}>
-          <MyHomePageCard cardData={post} />
+    <>
+      {/* <Paper> */}
+      <Card>
+        <Grid
+          container
+          justifyContent={"space-between"}
+          sx={{ p: "8px 20px", alignItems: "center" }}>
+          <Grid item>
+            <Typography
+              variant="subtitle1"
+              sx={{ textTransform: "capitalize" }}>
+              Your feed
+            </Typography>
+          </Grid>
+
+          <Grid item>
+            <Button variant="contained"> test</Button>
+          </Grid>
         </Grid>
-      ))}
-    </Grid>
+      </Card>
+      <Box
+        sx={{
+          flexGrow: 1,
+          bgcolor: "#eee",
+          display: "flex",
+        }}>
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={value}
+          onChange={handleChange}
+          aria-label="Vertical tabs example"
+          sx={{
+            bgcolor: "background.paper",
+            borderRight: 1,
+            borderColor: "divider",
+            minWidth: "200px",
+            height: "100%",
+            overflow: "auto",
+          }}>
+          <Tab
+            icon={<PortraitOutlinedIcon sx={{ fontSize: "20px" }} />}
+            iconPosition="start"
+            label="My feed"
+            {...a11yProps(0)}
+            sx={{
+              justifyContent: "flex-start",
+            }}
+          />
+          <Tab
+            icon={<WhatshotOutlinedIcon sx={{ fontSize: "20px" }} />}
+            iconPosition="start"
+            label="Popular"
+            {...a11yProps(1)}
+            sx={{
+              justifyContent: "flex-start",
+            }}
+          />
+          <Tab
+            icon={<ThumbUpOutlinedIcon sx={{ fontSize: "20px" }} />}
+            iconPosition="start"
+            label="Most upvoted"
+            {...a11yProps(2)}
+            sx={{
+              justifyContent: "flex-start",
+            }}
+          />
+          <Tab
+            icon={<QuestionAnswerOutlinedIcon sx={{ fontSize: "20px" }} />}
+            iconPosition="start"
+            label="best discussions"
+            {...a11yProps(3)}
+            sx={{
+              justifyContent: "flex-start",
+            }}
+          />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <MyFeed />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          Popular
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          MOst upvoted
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          Best discussions
+        </TabPanel>
+      </Box>
+      {/* </Paper> */}
+      {/* <PopupWrapper
+        open={open}
+        handleClose={handleClose}
+        maxWidth={"md"}
+        title={"Update Profile For : " + userData.email}
+        sx={{ display: "flex", justifyContent: "center" }}>
+        <MyForm
+          fieldsArray={FormFieldArray}
+          onSubmitFun={handleSubmit}
+          cancelBtn="cancel"
+          SubmitBtn="Update"
+          formSize="md"
+          // SpecialBtn={true}
+          borderAndShadow={true}
+          handleCancel={handleClose}
+          initialVal={initialVal}
+          typeValidation={typeValidation}
+        />
+      </PopupWrapper> */}
+    </>
   );
+}
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`vertical-tabpanel-${index}`}
+      aria-labelledby={`vertical-tab-${index}`}
+      {...other}>
+      {value === index && (
+        <Box
+          sx={{
+            p: 1,
+            maxHeight: "85vh",
+            overflow: "auto",
+          }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
+  };
 }
