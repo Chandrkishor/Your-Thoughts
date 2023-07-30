@@ -138,7 +138,6 @@ const UserProfile = () => {
     linkedin: "",
     image: "",
   });
-  console.log("-------- initialVal-----: >>", initialVal);
   const user = getUserDetails();
   let { setAlert } = useContext(General);
   const callBackData = (response, type) => {
