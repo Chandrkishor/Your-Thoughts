@@ -1,15 +1,6 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Card,
-  Grid,
-  Paper,
-  Tab,
-  Tabs,
-  Typography,
-} from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import { useContext, useState } from "react";
 import { General } from "./store/GeneralContext";
 import MyFeed from "@/components/HomePageComponents/Myfeed";
@@ -30,24 +21,6 @@ export default function Home() {
   return (
     <>
       {/* <Paper> */}
-      <Card>
-        <Grid
-          container
-          justifyContent={"space-between"}
-          sx={{ p: "8px 20px", alignItems: "center" }}>
-          <Grid item>
-            <Typography
-              variant="subtitle1"
-              sx={{ textTransform: "capitalize" }}>
-              Your feed
-            </Typography>
-          </Grid>
-
-          <Grid item>
-            <Button variant="contained"> test</Button>
-          </Grid>
-        </Grid>
-      </Card>
       <Box
         sx={{
           flexGrow: 1,

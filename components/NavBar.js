@@ -16,7 +16,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Avatar, Button, Grid, Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import Link from "next/link";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -25,6 +25,8 @@ import { useCallback, useContext, useState } from "react";
 import { General } from "@/app/store/GeneralContext";
 import { saveCookies } from "@/app/utils/AppUtils";
 import { API_BASEPATH } from "@/app/utils/Constant";
+import logo from "./highLightLogo.png";
+import Image from "next/image";
 
 const darkTheme = createTheme({
   palette: {
@@ -251,11 +253,12 @@ export default function Navbar() {
               <MenuIcon />
             </IconButton>
             {/* //* for logo */}
-            {/* <Typography
+            <Typography
               variant="h6"
               noWrap
-              component="a"
-              href="/"
+              component="div"
+              // href="/"
+              onClick={() => router.push(`${API_BASEPATH}`)}
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -266,13 +269,17 @@ export default function Navbar() {
                 textDecoration: "none",
               }}>
               <IconButton sx={{ p: 0 }}>
-                <img
+                <Image
                   alt="Remy Sharp"
-                  src="/low_dark_Logo.png"
-                  style={{ width: "50px", height: "50px" }}
+                  src={logo}
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    borderRadius: "50px",
+                  }}
                 />
               </IconButton>
-            </Typography> */}
+            </Typography>
             <Typography
               variant="h6"
               noWrap
