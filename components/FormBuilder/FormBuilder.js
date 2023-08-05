@@ -21,7 +21,6 @@ import {
 import { Formik, Form, Field, FastField } from "formik";
 import { TextField as MuiTextField } from "@mui/material";
 import validator from "./Validation";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useState } from "react";
@@ -71,7 +70,6 @@ export default function MyForm({
       {({ isSubmitting, errors, touched }) => (
         <Form>
           <Paper
-            id="---------paper-------"
             sx={
               SpecialBtn
                 ? {
