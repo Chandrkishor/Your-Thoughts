@@ -8,6 +8,7 @@ export const General = createContext();
 function GeneralContext({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+  const [isAddOpen, setIsAddOpen] = useState(false);
   const [alert, setAlert] = useState({
     open: false,
     message: undefined,
@@ -31,11 +32,13 @@ function GeneralContext({ children }) {
     <General.Provider
       value={{
         isLoading,
-        setIsLoading,
+        isAddOpen,
+        isLogin,
         alert,
         setAlert,
-        isLogin,
         setIsLogin,
+        setIsLoading,
+        setIsAddOpen,
       }}>
       {children}
     </General.Provider>

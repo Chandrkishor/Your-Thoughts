@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Data from "./dummyPost.json";
-import MYCard from "@/components/MyCard";
+import MYCard from "@/components/common/MyCard";
 import { Grid } from "@mui/material";
 export default function UserPosts() {
   const [posts, setPosts] = useState([]);

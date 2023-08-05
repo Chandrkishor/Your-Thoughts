@@ -25,8 +25,9 @@ import { useCallback, useContext, useState } from "react";
 import { General } from "@/app/store/GeneralContext";
 import { saveCookies } from "@/app/utils/AppUtils";
 import { API_BASEPATH } from "@/app/utils/Constant";
-import logo from "./highLightLogo.png";
+import logo from "../../app/assets/highLightLogo.png";
 import Image from "next/image";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 const darkTheme = createTheme({
   palette: {
@@ -92,7 +93,7 @@ export default function Navbar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const router = useRouter();
-  let { isLogin, setIsLogin, setAlert } = useContext(General);
+  let { isLogin, setIsLogin, setAlert, setIsAddOpen } = useContext(General);
 
   const handleLogout = useCallback(() => {
     sessionStorage.clear();
@@ -148,8 +149,11 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}>
       <MenuItem onClick={() => handleRoute("profile")}>Profile</MenuItem>
-      {/* <MenuItem onClick={() => handleRoute("myaccount")}>My account</MenuItem> */}
       <MenuItem onClick={handleLogout}>
+        <AddCircleOutlineOutlinedIcon sx={{ color: "#63ff63" }} />
+        <span style={{ marginLeft: 5 }}> Add Post</span>
+      </MenuItem>
+      <MenuItem onClick={() => setIsAddOpen(true)}>
         <LogoutIcon sx={{ color: "#ff6161" }} />
         <span style={{ marginLeft: 5 }}>Log out</span>
       </MenuItem>
