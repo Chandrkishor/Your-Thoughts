@@ -17,7 +17,7 @@ import {
 import MyForm from "@/components/FormBuilder/FormBuilder";
 import PopupWrapper from "@/components/FormBuilder/DialogWrapper";
 import { Profiler, useContext, useEffect, useState } from "react";
-import useAPI from "@/components/GeneralAPICaller";
+import useAPI from "@/components/common/GeneralAPICaller";
 import { getUserDetails } from "../utils/AppUtils";
 import { General } from "../store/GeneralContext";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -31,7 +31,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import Image from "next/image";
-import profilePic from "./SquireLogo.png";
+import profilePic from "../assets/SquireLogo.png";
 import UserPosts from "./tabs/userPosts";
 
 const FormFieldArray = [

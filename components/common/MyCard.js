@@ -12,7 +12,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import Image from "next/image";
-import profilePic from "./profilePic.png";
+import profilePic from "../../app/assets/profilePic.png";
 import { Box } from "@mui/material";
 
 export default function MYCard({ cardData }) {

@@ -4,11 +4,11 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Headers from "@/components/Headers";
-import Footer from "@/components/Footer";
-import Navbar from "@/components/NavBar";
+import Headers from "@/components/common/Headers";
+import Footer from "@/components/common/Footer";
+import Navbar from "@/components/NavBar/NavBar";
 import GeneralContext from "./store/GeneralContext";
-import SetAlertComponent from "@/components/AlertHanlder";
+import SetAlertComponent from "@/components/common/AlertHanlder";
 import { Loader } from "@/components/Loader";
 
 const inter = Inter({ subsets: ["latin"] });
