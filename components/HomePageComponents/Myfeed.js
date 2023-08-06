@@ -72,8 +72,8 @@ const myFeedArray = [
 const MyFeed = () => {
   return (
     <Grid container spacing={2}>
-      {myFeedArray?.map((post) => (
-        <Grid item xs={12} sm={6} md={6} lg={4} key={post?.img}>
+      {myFeedArray?.map((post, index) => (
+        <Grid item xs={12} sm={6} md={6} lg={4} key={`${post?.img + index}`}>
           <MyHomePageCard cardData={post} />
         </Grid>
       ))}

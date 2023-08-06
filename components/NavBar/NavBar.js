@@ -149,11 +149,15 @@ export default function Navbar() {
       open={isMenuOpen}
       onClose={handleMenuClose}>
       <MenuItem onClick={() => handleRoute("profile")}>Profile</MenuItem>
-      <MenuItem onClick={handleLogout}>
+      <MenuItem
+        onClick={() => {
+          setIsAddOpen(true);
+          handleMenuClose();
+        }}>
         <AddCircleOutlineOutlinedIcon sx={{ color: "#63ff63" }} />
         <span style={{ marginLeft: 5 }}> Add Post</span>
       </MenuItem>
-      <MenuItem onClick={() => setIsAddOpen(true)}>
+      <MenuItem onClick={handleLogout}>
         <LogoutIcon sx={{ color: "#ff6161" }} />
         <span style={{ marginLeft: 5 }}>Log out</span>
       </MenuItem>

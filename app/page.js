@@ -1,26 +1,30 @@
 "use client";
 
 import { Box, Tab, Tabs } from "@mui/material";
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { General } from "./store/GeneralContext";
 import MyFeed from "@/components/HomePageComponents/Myfeed";
 import WhatshotOutlinedIcon from "@mui/icons-material/WhatshotOutlined";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
 import PortraitOutlinedIcon from "@mui/icons-material/PortraitOutlined";
+import AddPost from "@/components/AddPost/page";
+import PopupWrapper from "@/components/FormBuilder/DialogWrapper";
 
 export default function Home() {
-  let { setAlert } = useContext(General);
+  let { setAlert, setIsAddOpen, isAddOpen } = useContext(General);
   const [open, setOpen] = useState(false);
   // const [userData, setUserData] = useState({});
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const handleClose = useCallback(() => {
+    setIsAddOpen(false);
+  }, []);
 
   return (
     <>
-      {/* <Paper> */}
       <Box
         sx={{
           flexGrow: 1,
@@ -85,32 +89,19 @@ export default function Home() {
           Popular
         </TabPanel>
         <TabPanel value={value} index={2}>
-          MOst upvoted
+          Most upvoted
         </TabPanel>
         <TabPanel value={value} index={3}>
           Best discussions
         </TabPanel>
       </Box>
-      {/* </Paper> */}
-      {/* <PopupWrapper
-        open={open}
+      <PopupWrapper
+        open={isAddOpen}
         handleClose={handleClose}
         maxWidth={"md"}
-        title={"Update Profile For : " + userData.email}
-        sx={{ display: "flex", justifyContent: "center" }}>
-        <MyForm
-          fieldsArray={FormFieldArray}
-          onSubmitFun={handleSubmit}
-          cancelBtn="cancel"
-          SubmitBtn="Update"
-          formSize="md"
-          // SpecialBtn={true}
-          borderAndShadow={true}
-          handleCancel={handleClose}
-          initialVal={initialVal}
-          typeValidation={typeValidation}
-        />
-      </PopupWrapper> */}
+        title={"Add New Post "}>
+        <AddPost />
+      </PopupWrapper>
     </>
   );
 }

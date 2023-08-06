@@ -118,6 +118,13 @@ const validationSchema = {
       return true;
     }
   ),
+  title: Yup.string()
+    .required("Title is required")
+    .min(2, "Title must be at least 2 characters")
+    .max(100, "Title must be at most 100 characters"),
+  content: Yup.string()
+    .required("Content is required")
+    .min(50, "Content must be at least 10 characters"),
 };
 
 // const typeValidation = [
